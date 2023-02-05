@@ -26,8 +26,8 @@ public class CartController : MonoBehaviour {
         _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (move.x + move.y) * _halfMoveForce * Time.fixedDeltaTime), transform.TransformPoint(-0.2794f, 0.0f, -0.5207f));
         _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (-move.x + move.y) * _halfMoveForce * Time.fixedDeltaTime), transform.TransformPoint(0.2794f, 0.0f, -0.5207f));
 
-        print(move.x + move.y);
-        print(-move.x + move.y);
+        // print(move.x + move.y);
+        // print(-move.x + move.y);
         
         // Vector2 look = _moveAction.ReadValue<Vector2>();
 
