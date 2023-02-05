@@ -23,8 +23,11 @@ public class CartController : MonoBehaviour {
     private void FixedUpdate() {
         Vector2 move = _moveAction.ReadValue<Vector2>();
 
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (move.x + move.y) * _halfMoveForce * Time.fixedDeltaTime), transform.TransformPoint(-0.5f, 0.0f, -0.5f));
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (-move.x + move.y) * _halfMoveForce * Time.fixedDeltaTime), transform.TransformPoint(0.5f, 0.0f, -0.5f));
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (move.x + move.y) * _halfMoveForce * Time.fixedDeltaTime), transform.TransformPoint(-0.2794f, 0.0f, -0.5207f));
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (-move.x + move.y) * _halfMoveForce * Time.fixedDeltaTime), transform.TransformPoint(0.2794f, 0.0f, -0.5207f));
+
+        print(move.x + move.y);
+        print(-move.x + move.y);
         
         // Vector2 look = _moveAction.ReadValue<Vector2>();
 
