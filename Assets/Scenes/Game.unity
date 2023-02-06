@@ -1724,8 +1724,8 @@ ArticulationBody:
     damping: 0
     forceLimit: 3.4028235e+38
     target: 0
-    targetVelocity: -0.01
-    driveType: 0
+    targetVelocity: 0.025
+    driveType: 3
   m_ZDrive:
     lowerLimit: 0
     upperLimit: 0
@@ -2315,7 +2315,7 @@ ArticulationBody:
     forceLimit: 3.4028235e+38
     target: 0
     targetVelocity: 0
-    driveType: 2
+    driveType: 0
   m_ZDrive:
     lowerLimit: -11.25
     upperLimit: 11.25
@@ -2324,7 +2324,7 @@ ArticulationBody:
     forceLimit: 3.4028235e+38
     target: 0
     targetVelocity: 0
-    driveType: 2
+    driveType: 0
   m_LinearDamping: 0.05
   m_AngularDamping: 0.05
   m_JointFriction: 0
