@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 public class CartController : MonoBehaviour {
     [SerializeField] private float _halfMoveForce;
 
+    [SerializeField] private Transform _targetTransform;
+
     private PlayerInput _playerInput;
     private InputAction _moveAction, _lookAction, _grabAction, _retractAction, _pauseAction;
 
@@ -32,5 +34,9 @@ public class CartController : MonoBehaviour {
         // Vector2 look = _moveAction.ReadValue<Vector2>();
 
         // _articulationBody.AddRelativeForce(Vector3.forward * move.y * moveForce * Time.fixedDeltaTime);
+    }
+
+    public Transform GetTargetTransform() {
+        return _targetTransform;
     }
 }
