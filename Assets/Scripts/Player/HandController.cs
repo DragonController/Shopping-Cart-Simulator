@@ -41,6 +41,7 @@ public class HandController : MonoBehaviour {
 
         Quaternion rotation = Quaternion.Inverse(Quaternion.LookRotation(_targetTransform.position - _shoulderTransform.TransformPoint(_shoulderRelativePosition))) * _cartTransform.rotation;
         float elbowAngle = 0.0f;
+        float wristAngle = 0.0f;
 
         float s = (_upperArmLength + _lowerArmLength + targetDistance) * 0.5f;
 
@@ -50,15 +51,16 @@ public class HandController : MonoBehaviour {
         if (_upperArmLength + _lowerArmLength > targetDistance) {
             rotation = Quaternion.LookRotation((rotation * Vector3.forward).normalized * relativeElbowZ + (rotation * Vector3.up).normalized * -relativeElbowY, rotation * Vector3.up);
             elbowAngle = 180.0f - Mathf.Acos((_upperArmLength * _upperArmLength + _lowerArmLength * _lowerArmLength - targetDistance * targetDistance) / (2.0f * _upperArmLength * _lowerArmLength)) * Mathf.Rad2Deg;
+            wristAngle = -Mathf.Acos((_lowerArmLength * _lowerArmLength + targetDistance * targetDistance - _upperArmLength * _upperArmLength) / (2.0f * _lowerArmLength * targetDistance)) * Mathf.Rad2Deg;
         }
 
         _driveTargets.Add(-(180.0f - ((360.0f - ((rotation.eulerAngles.z + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
         _driveTargets.Add((180.0f - ((360.0f - ((rotation.eulerAngles.x + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
         _driveTargets.Add((180.0f - ((360.0f - ((rotation.eulerAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
         _driveTargets.Add((180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
-        print(elbowAngle);
-        print((180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)));
-        _driveTargets.Add(0.0f);
+        _driveTargets.Add((180.0f - ((360.0f - ((wristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
+        print(wristAngle);
+        // _driveTargets.Add(0.0f);
         _driveTargets.Add(0.0f);
         _driveTargets.Add(0.0f);
         _articulationBody.SetDriveTargets(_driveTargets);
