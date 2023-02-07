@@ -40,30 +40,24 @@ public class HandController : MonoBehaviour {
         _driveTargets.Add(0.0f);
 
         Quaternion rotation = Quaternion.Inverse(Quaternion.LookRotation(_targetTransform.position - _shoulderTransform.TransformPoint(_shoulderRelativePosition))) * _cartTransform.rotation;
+        float elbowAngle = 0.0f;
 
         float s = (_upperArmLength + _lowerArmLength + targetDistance) * 0.5f;
 
         float relativeElbowY = 2.0f * Mathf.Sqrt(s * (s - _upperArmLength) * (s - _lowerArmLength) * (s - targetDistance)) / targetDistance;
         float relativeElbowZ = Mathf.Sqrt(_upperArmLength * _upperArmLength - relativeElbowY * relativeElbowY);
 
-        // print(relativeElbowY);
-        // print(relativeElbowZ);
-
         if (_upperArmLength + _lowerArmLength > targetDistance) {
             rotation = Quaternion.LookRotation((rotation * Vector3.forward).normalized * relativeElbowZ + (rotation * Vector3.up).normalized * -relativeElbowY, rotation * Vector3.up);
-            print(rotation.eulerAngles);
+            elbowAngle = 180.0f - Mathf.Acos((_upperArmLength * _upperArmLength + _lowerArmLength * _lowerArmLength - targetDistance * targetDistance) / (2.0f * _upperArmLength * _lowerArmLength)) * Mathf.Rad2Deg;
         }
-
-        // print((rotation * Vector3.forward).normalized * relativeElbowZ);
-        // print((rotation * Vector3.up).normalized * relativeElbowY);
-        // print((rotation * Vector3.forward).normalized * relativeElbowZ + (rotation * Vector3.up).normalized * relativeElbowY);
-
-        // print(Quaternion.LookRotation((rotation * Vector3.forward).normalized * relativeElbowZ + (rotation * Vector3.up).normalized * relativeElbowY, rotation * Vector3.up));
 
         _driveTargets.Add(-(180.0f - ((360.0f - ((rotation.eulerAngles.z + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
         _driveTargets.Add((180.0f - ((360.0f - ((rotation.eulerAngles.x + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
         _driveTargets.Add((180.0f - ((360.0f - ((rotation.eulerAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
-        _driveTargets.Add(0.0f);
+        _driveTargets.Add((180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
+        print(elbowAngle);
+        print((180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)));
         _driveTargets.Add(0.0f);
         _driveTargets.Add(0.0f);
         _driveTargets.Add(0.0f);
