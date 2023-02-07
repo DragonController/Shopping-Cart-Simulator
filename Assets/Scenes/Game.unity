@@ -172,7 +172,7 @@ ArticulationBody:
   m_ParentAnchorRotation: {x: 0.50000006, y: 0.50000006, z: -0.50000006, w: 0.50000006}
   m_AnchorPosition: {x: -0.005, y: -0.12482007, z: -0.052}
   m_AnchorRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
-  m_MatchAnchors: 1
+  m_MatchAnchors: 0
   m_ArticulationJointType: 2
   m_LinearX: 2
   m_LinearY: 2
@@ -1095,7 +1095,7 @@ ArticulationBody:
   m_ParentAnchorRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: -0.11745012, z: 0}
   m_AnchorRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
-  m_MatchAnchors: 1
+  m_MatchAnchors: 0
   m_ArticulationJointType: 2
   m_LinearX: 2
   m_LinearY: 2
@@ -1226,7 +1226,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 475303573}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a21fd4ecf7505a14f9ac3fa5dcd73ed5, type: 3}
   m_Name: 
@@ -1278,11 +1278,11 @@ ArticulationBody:
   serializedVersion: 5
   m_Mass: 3
   m_ParentAnchorPosition: {x: 0, y: 0.627, z: -0.24}
-  m_ParentAnchorRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_ParentAnchorRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
-  m_AnchorRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
-  m_MatchAnchors: 1
-  m_ArticulationJointType: 3
+  m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_MatchAnchors: 0
+  m_ArticulationJointType: 0
   m_LinearX: 2
   m_LinearY: 2
   m_LinearZ: 2
@@ -1453,7 +1453,7 @@ ArticulationBody:
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_MatchAnchors: 1
+  m_MatchAnchors: 0
   m_ArticulationJointType: 3
   m_LinearX: 2
   m_LinearY: 2
@@ -1700,7 +1700,7 @@ ArticulationBody:
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_MatchAnchors: 1
+  m_MatchAnchors: 0
   m_ArticulationJointType: 1
   m_LinearX: 0
   m_LinearY: 2
@@ -1801,7 +1801,7 @@ ArticulationBody:
   m_ParentAnchorRotation: {x: 0.50000006, y: -0.50000006, z: 0.50000006, w: 0.50000006}
   m_AnchorPosition: {x: -0.000000007450581, y: -0.124819845, z: -0.05299853}
   m_AnchorRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
-  m_MatchAnchors: 1
+  m_MatchAnchors: 0
   m_ArticulationJointType: 2
   m_LinearX: 2
   m_LinearY: 2
@@ -1972,7 +1972,7 @@ ArticulationBody:
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_MatchAnchors: 1
+  m_MatchAnchors: 0
   m_ArticulationJointType: 1
   m_LinearX: 2
   m_LinearY: 0
@@ -2095,7 +2095,7 @@ ConfigurableJoint:
   m_ConnectedArticulationBody: {fileID: 1288792776}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 0}
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
   serializedVersion: 3
   m_SecondaryAxis: {x: 0, y: 0, z: 0}
@@ -2290,7 +2290,7 @@ ArticulationBody:
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
   m_AnchorPosition: {x: 0, y: -0.5207, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
-  m_MatchAnchors: 1
+  m_MatchAnchors: 0
   m_ArticulationJointType: 3
   m_LinearX: 0
   m_LinearY: 0
@@ -2459,7 +2459,7 @@ ArticulationBody:
   m_ParentAnchorRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_AnchorPosition: {x: 0, y: -0.105997026, z: 0}
   m_AnchorRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
-  m_MatchAnchors: 1
+  m_MatchAnchors: 0
   m_ArticulationJointType: 2
   m_LinearX: 2
   m_LinearY: 2
@@ -2661,7 +2661,7 @@ ArticulationBody:
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_MatchAnchors: 1
+  m_MatchAnchors: 0
   m_ArticulationJointType: 1
   m_LinearX: 0
   m_LinearY: 0
