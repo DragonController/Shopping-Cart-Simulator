@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CartController : MonoBehaviour {
     [SerializeField] private float _halfMoveForce;
+    [SerializeField] private float _lookSpeed;
 
     [SerializeField] private Transform _targetTransform;
 
@@ -23,10 +24,10 @@ public class CartController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        Vector2 move = _moveAction.ReadValue<Vector2>();
+        Vector2 move = _moveAction.ReadValue<Vector2>() * Time.fixedDeltaTime;
 
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (move.x + move.y) * _halfMoveForce * Time.fixedDeltaTime), transform.TransformPoint(-0.2794f, 0.0f, -0.5207f));
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (-move.x + move.y) * _halfMoveForce * Time.fixedDeltaTime), transform.TransformPoint(0.2794f, 0.0f, -0.5207f));
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (move.x + move.y) * _halfMoveForce), transform.TransformPoint(-0.2794f, 0.0f, -0.5207f));
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (-move.x + move.y) * _halfMoveForce), transform.TransformPoint(0.2794f, 0.0f, -0.5207f));
 
         // print(move.x + move.y);
         // print(-move.x + move.y);
@@ -38,5 +39,9 @@ public class CartController : MonoBehaviour {
 
     public Transform GetTargetTransform() {
         return _targetTransform;
+    }
+
+    public Vector2 GetLook() {
+        return _lookAction.ReadValue<Vector2>() * _lookSpeed;
     }
 }

@@ -2,11 +2,13 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class HandController : MonoBehaviour {
+    private CartController _cartController;
     private Transform _cartTransform, _shoulderTransform, _targetTransform;
     private Vector3 _shoulderRelativePosition;
 
     private ArticulationBody _wristArticulationBody, _shoulderArticulationBody;
     private List<float> _driveTargets = new List<float>();
+    private List<float> _driveTargetVelocities = new List<float>();
 
     private float _upperArmLength, _lowerArmLength;
 
@@ -26,7 +28,8 @@ public class HandController : MonoBehaviour {
         _upperArmLength = Vector3.Distance(_shoulderPosition, _elbowPosition);
         _lowerArmLength = Vector3.Distance(_elbowPosition, _wristPosition);
 
-        _targetTransform = _cartTransform.gameObject.GetComponent<CartController>().GetTargetTransform();
+        _cartController = _cartTransform.gameObject.GetComponent<CartController>();
+        _targetTransform = _cartController.GetTargetTransform();
     }
 
     private void FixedUpdate() {
@@ -34,6 +37,8 @@ public class HandController : MonoBehaviour {
         float targetDistance = posDifference.magnitude;
 
         _driveTargets.Clear();
+        _driveTargets.Add(0.0f);
+        _driveTargets.Add(0.0f);
         _driveTargets.Add(0.0f);
         _driveTargets.Add(0.0f);
         _driveTargets.Add(0.0f);
@@ -58,5 +63,24 @@ public class HandController : MonoBehaviour {
         _driveTargets.Add(0.0f);
         _driveTargets.Add(0.0f);
         _wristArticulationBody.SetDriveTargets(_driveTargets);
+
+        _driveTargetVelocities.Clear();
+        _driveTargetVelocities.Add(0.0f);
+        _driveTargetVelocities.Add(0.0f);
+        _driveTargetVelocities.Add(0.0f);
+        _driveTargetVelocities.Add(0.0f);
+        _driveTargetVelocities.Add(0.0f);
+        _driveTargetVelocities.Add(0.0f);
+        
+        Vector2 look = _cartController.GetLook() * Time.fixedDeltaTime;
+        print(look);
+        _driveTargetVelocities.Add(look.x);
+        _driveTargetVelocities.Add(-look.y);
+        _driveTargetVelocities.Add(0.0f);
+        _driveTargetVelocities.Add(0.0f);
+        _driveTargetVelocities.Add(0.0f);
+        _driveTargetVelocities.Add(0.0f);
+
+        _wristArticulationBody.SetDriveTargetVelocities(_driveTargetVelocities);
     }
 }
