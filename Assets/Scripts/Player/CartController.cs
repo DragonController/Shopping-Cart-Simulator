@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class CartController : MonoBehaviour {
     [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed;
 
-    [SerializeField] private Transform _targetTransform;
+    [SerializeField] private Transform _targetTransform, _itemsParentTransform;
     
     [SerializeField] private string _itemTag;
 
@@ -12,18 +12,17 @@ public class CartController : MonoBehaviour {
     private InputAction _moveAction, _lookAction, _grabAction, _retractAction, _pauseAction;
 
     private bool _grab = false;
+    private bool _grabbingItem = false;
 
     private ArticulationBody _articulationBody;
-
-    private FixedJoint _itemJoint;
     
     private void Start() {
         _playerInput = GetComponent<PlayerInput>();
         _moveAction = _playerInput.actions["Move"];
         _lookAction = _playerInput.actions["Look"];
         _grabAction = _playerInput.actions["Grab"];
-        _grabAction.performed += _ => _grab = true;
-        _grabAction.canceled += _ => _grab = false;
+        _grabAction.performed += _ => SetGrab(true);
+        _grabAction.canceled += _ => SetGrab(false);
         _retractAction = _playerInput.actions["Retract"];
         _pauseAction = _playerInput.actions["Pause"];
 
@@ -52,8 +51,24 @@ public class CartController : MonoBehaviour {
         return _lookAction.ReadValue<Vector2>() * _lookSpeed;
     }
 
-    public bool IsGrabbing() {
+    public bool IsGrab() {
         return _grab;
+    }
+
+    private void SetGrab(bool grab) {
+        _grab = grab;
+
+        if (!grab) {
+            _grabbingItem = false;
+        }
+    }
+
+    public bool IsGrabbingItem() {
+        return _grabbingItem;
+    }
+
+    public void SetGrabbingItem(bool grabbingItem) {
+        _grabbingItem = grabbingItem;
     }
 
     public float GetGrab() {
@@ -64,12 +79,8 @@ public class CartController : MonoBehaviour {
         return -_grabSpeed;
     }
 
-    public FixedJoint GetItemJoint() {
-        return _itemJoint;
-    }
-
-    public void SetItemJoint(FixedJoint itemJoint) {
-        _itemJoint = itemJoint;
+    public Transform GetItemsParentTransform() {
+        return _itemsParentTransform;
     }
 
     public string GetItemTag() {

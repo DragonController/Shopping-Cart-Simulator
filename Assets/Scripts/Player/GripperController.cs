@@ -3,30 +3,26 @@ using System.Collections.Generic;
 
 public class GripperController : MonoBehaviour {
     private CartController _cartController;
+    private Transform _itemsParentTransform;
 
-    private ArticulationBody _gripperArticulationBody;
-
-    private List<GameObject> _collidingItems = new List<GameObject>();
-    private List<GameObject> _triggeringItems = new List<GameObject>();
+    private List<Transform> _collidingItemTransforms = new List<Transform>();
+    private List<Transform> _triggeringItemTransforms = new List<Transform>();
 
     private void Start() {
         _cartController = transform.parent.parent.parent.parent.parent.gameObject.GetComponent<CartController>();
-
-        _gripperArticulationBody = GetComponent<ArticulationBody>();
+        _itemsParentTransform = _cartController.GetItemsParentTransform();
     }
 
     private void FixedUpdate() {
-        FixedJoint _itemJoint = _cartController.GetItemJoint();
+        if (_cartController.IsGrab()) {
+            if (!_cartController.IsGrabbingItem() && transform.childCount == 0) {
+                foreach (Transform itemTransform in _collidingItemTransforms) {
+                    if (_triggeringItemTransforms.Contains(itemTransform)) {
+                        itemTransform.gameObject.GetComponent<ArticulationBody>().enabled = false;
 
-        if (_cartController.IsGrabbing()) {
-            if (_itemJoint == null) {
-                foreach (GameObject triggeringItem in  _triggeringItems) {
-                    if (_collidingItems.Contains(triggeringItem)) {
-                        _itemJoint = triggeringItem.AddComponent<FixedJoint>() as FixedJoint;
+                        itemTransform.parent = transform;
 
-                        _itemJoint.connectedArticulationBody = _gripperArticulationBody;
-
-                        _cartController.SetItemJoint(_itemJoint);
+                        _cartController.SetGrabbingItem(true);
                     }
                 }
             }
@@ -34,28 +30,32 @@ public class GripperController : MonoBehaviour {
             return;
         }
 
-        if (_itemJoint != null) {
-            Destroy(_itemJoint);
+        if (transform.childCount > 0) {
+            Transform itemTransform = transform.GetChild(0);
+
+            itemTransform.parent = _itemsParentTransform;
+
+            itemTransform.gameObject.GetComponent<ArticulationBody>().enabled = true;
         }
     }
 
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.tag == _cartController.GetItemTag()) {
-            _collidingItems.Add(collision.gameObject);
+            _collidingItemTransforms.Add(collision.transform);
         }
     }
 
     private void OnCollisionExit(Collision collision) {
-        _collidingItems.Remove(collision.gameObject);
+        _collidingItemTransforms.RemoveAll(c => c == collision.transform);
     }
 
     private void OnTriggerEnter(Collider collider) {
         if (collider.tag == _cartController.GetItemTag()) {
-            _triggeringItems.Add(collider.gameObject);
+            _triggeringItemTransforms.Add(collider.transform);
         }
     }
 
     private void OnTriggerExit(Collider collider) {
-        _triggeringItems.Remove(collider.gameObject);
+        _triggeringItemTransforms.RemoveAll(c => c == collider.transform);
     }
 }
