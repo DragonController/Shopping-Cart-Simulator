@@ -7,9 +7,15 @@ public class GripperController : MonoBehaviour {
 
     private List<ArticulationBody> _collidingItemArticulationBodies = new List<ArticulationBody>();
     private List<ArticulationBody> _triggeringItemArticulationBodies = new List<ArticulationBody>();
-    private ArticulationBody childArticulationBody;
+    private ArticulationBody _articulationBody, _childArticulationBody;
+
+    private float _defaultMass;
 
     private void Start() {
+        _articulationBody = GetComponent<ArticulationBody>();
+
+        _defaultMass = _articulationBody.mass;
+
         _cartController = transform.parent.parent.parent.parent.parent.gameObject.GetComponent<CartController>();
         _itemsParentTransform = _cartController.GetItemsParentTransform();
     }
@@ -19,11 +25,14 @@ public class GripperController : MonoBehaviour {
             if (!_cartController.IsGrabbingItem() && transform.childCount == 0) {
                 foreach (ArticulationBody itemArticulationBody in _collidingItemArticulationBodies) {
                     if (_triggeringItemArticulationBodies.Contains(itemArticulationBody)) {
+                        _articulationBody.centerOfMass = Vector3.Lerp(_articulationBody.centerOfMass, transform.InverseTransformPoint(itemArticulationBody.worldCenterOfMass), itemArticulationBody.mass / (_articulationBody.mass + itemArticulationBody.mass));
+                        _articulationBody.mass += itemArticulationBody.mass;
+
                         itemArticulationBody.enabled = false;
 
                         itemArticulationBody.transform.parent = transform;
 
-                        childArticulationBody = itemArticulationBody;
+                        _childArticulationBody = itemArticulationBody;
 
                         _cartController.SetGrabbingItem(true);
                     }
@@ -34,11 +43,14 @@ public class GripperController : MonoBehaviour {
         }
 
         if (transform.childCount > 0) {
-            childArticulationBody.transform.parent = _itemsParentTransform;
+            _childArticulationBody.transform.parent = _itemsParentTransform;
 
-            childArticulationBody.enabled = true;
+            _childArticulationBody.enabled = true;
 
-            childArticulationBody = null;
+            _childArticulationBody = null;
+
+            _articulationBody.mass = _defaultMass;
+            _articulationBody.ResetCenterOfMass();
         }
     }
 
