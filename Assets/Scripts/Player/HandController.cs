@@ -6,7 +6,7 @@ public class HandController : MonoBehaviour {
     private Transform _cartTransform, _shoulderTransform, _targetTransform;
     private Vector3 _shoulderRelativePosition;
 
-    private ArticulationBody _wristArticulationBody, _shoulderArticulationBody;
+    private ArticulationBody _wristArticulationBody;
     private List<float> _driveTargets = new List<float>();
     private List<float> _driveTargetVelocities = new List<float>();
 
@@ -16,8 +16,8 @@ public class HandController : MonoBehaviour {
         _wristArticulationBody = GetComponent<ArticulationBody>();
 
         _shoulderTransform = transform.parent.parent;
-        _shoulderArticulationBody = _shoulderTransform.gameObject.GetComponent<ArticulationBody>();
-        _cartTransform = _shoulderTransform.parent;
+
+        _cartTransform = _shoulderTransform.parent.parent;
         
         _shoulderRelativePosition = _shoulderTransform.gameObject.GetComponent<ArticulationBody>().anchorPosition;
 
@@ -39,26 +39,26 @@ public class HandController : MonoBehaviour {
         Vector3 posDifference = _targetTransform.position - _shoulderTransform.TransformPoint(_shoulderRelativePosition);
         float targetDistance = posDifference.magnitude;
 
-        Quaternion rotation = Quaternion.Euler(Mathf.Atan2(posDifference.y, targetDistance) * Mathf.Rad2Deg, 0.0f, Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y);
+        Vector2 upperArmAngles = new Vector2(Mathf.Atan2(posDifference.y, targetDistance) * Mathf.Rad2Deg, Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y);
         float elbowAngle = 0.0f;
         float wristAngle = Mathf.Atan2(posDifference.y, targetDistance) * Mathf.Rad2Deg;
 
         if (_upperArmLength + _lowerArmLength > targetDistance) {
-            rotation = Quaternion.Euler((Mathf.Atan2(posDifference.y, targetDistance) + Mathf.Acos((_upperArmLength * _upperArmLength + targetDistance * targetDistance - _lowerArmLength * _lowerArmLength) / (2.0f * _upperArmLength * targetDistance))) * Mathf.Rad2Deg, 0.0f, Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y);
+            upperArmAngles = new Vector2((Mathf.Atan2(posDifference.y, targetDistance) + Mathf.Acos((_upperArmLength * _upperArmLength + targetDistance * targetDistance - _lowerArmLength * _lowerArmLength) / (2.0f * _upperArmLength * targetDistance))) * Mathf.Rad2Deg, Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y);
             elbowAngle = 180.0f - Mathf.Acos((_upperArmLength * _upperArmLength + _lowerArmLength * _lowerArmLength - targetDistance * targetDistance) / (2.0f * _upperArmLength * _lowerArmLength)) * Mathf.Rad2Deg;
             wristAngle = (-Mathf.Acos((_lowerArmLength * _lowerArmLength + targetDistance * targetDistance - _upperArmLength * _upperArmLength) / (2.0f * _lowerArmLength * targetDistance)) + Mathf.Atan2(posDifference.y, targetDistance)) * Mathf.Rad2Deg;
         }
 
-        _shoulderArticulationBody.anchorRotation = rotation;
-
-        _driveTargets[8] = (180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
-        _driveTargets[9] = (180.0f - ((360.0f - ((wristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[6] += (180.0f - ((360.0f - ((upperArmAngles.y - _driveTargets[6] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[8] += (180.0f - ((360.0f - ((-upperArmAngles.x - _driveTargets[8] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[10] = (180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[11] = (180.0f - ((360.0f - ((wristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
         _wristArticulationBody.SetDriveTargets(_driveTargets);
         
         Vector2 look = _cartController.GetLook() * Time.fixedDeltaTime;
 
-        _driveTargetVelocities[6] = (look.x);
-        _driveTargetVelocities[7] = (-look.y);
+        _driveTargetVelocities[7] = look.x;
+        _driveTargetVelocities[9] = -look.y;
 
         _wristArticulationBody.SetDriveTargetVelocities(_driveTargetVelocities);
     }
