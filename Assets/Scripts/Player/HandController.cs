@@ -65,8 +65,7 @@ public class HandController : MonoBehaviour {
         
         _wristArticulationBody.SetDriveTargets(_driveTargets);
         
-        // Vector2 look = _cartController.GetLook();
-        float grab = _cartController.GetGrab();
+        float grab = _cartController.GetGrab() * Mathf.Deg2Rad;
 
         // _driveTargetVelocities[6] = (180.0f - ((360.0f - ((upperArmAngles.x - _shoulderSwivelTransform.localEulerAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad / Time.fixedDeltaTime;
 

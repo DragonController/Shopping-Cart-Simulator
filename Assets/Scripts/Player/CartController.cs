@@ -6,6 +6,10 @@ public class CartController : MonoBehaviour {
 
     [SerializeField] private Transform _targetTransform;
 
+    [SerializeField] private ConfigurableJoint _itemJoint;
+    
+    [SerializeField] private string _itemTag;
+
     private PlayerInput _playerInput;
     private InputAction _moveAction, _lookAction, _grabAction, _retractAction, _pauseAction;
 
@@ -48,11 +52,27 @@ public class CartController : MonoBehaviour {
         return _lookAction.ReadValue<Vector2>() * _lookSpeed;
     }
 
+    public bool IsGrabbing() {
+        return _grab;
+    }
+
     public float GetGrab() {
         if (_grab) {
             return _grabSpeed;
         }
 
         return -_grabSpeed;
+    }
+
+    public ConfigurableJoint GetItemJoint() {
+        return _itemJoint;
+    }
+
+    public void SetItemJoint(ConfigurableJoint itemJoint) {
+        _itemJoint = itemJoint;
+    }
+
+    public string GetItemTag() {
+        return _itemTag;
     }
 }
