@@ -5,8 +5,9 @@ public class GripperController : MonoBehaviour {
     private CartController _cartController;
     private Transform _itemsParentTransform;
 
-    private List<Transform> _collidingItemTransforms = new List<Transform>();
-    private List<Transform> _triggeringItemTransforms = new List<Transform>();
+    private List<ArticulationBody> _collidingItemArticulationBodies = new List<ArticulationBody>();
+    private List<ArticulationBody> _triggeringItemArticulationBodies = new List<ArticulationBody>();
+    private ArticulationBody childArticulationBody;
 
     private void Start() {
         _cartController = transform.parent.parent.parent.parent.parent.gameObject.GetComponent<CartController>();
@@ -16,11 +17,13 @@ public class GripperController : MonoBehaviour {
     private void FixedUpdate() {
         if (_cartController.IsGrab()) {
             if (!_cartController.IsGrabbingItem() && transform.childCount == 0) {
-                foreach (Transform itemTransform in _collidingItemTransforms) {
-                    if (_triggeringItemTransforms.Contains(itemTransform)) {
-                        itemTransform.gameObject.GetComponent<ArticulationBody>().enabled = false;
+                foreach (ArticulationBody itemArticulationBody in _collidingItemArticulationBodies) {
+                    if (_triggeringItemArticulationBodies.Contains(itemArticulationBody)) {
+                        itemArticulationBody.enabled = false;
 
-                        itemTransform.parent = transform;
+                        itemArticulationBody.transform.parent = transform;
+
+                        childArticulationBody = itemArticulationBody;
 
                         _cartController.SetGrabbingItem(true);
                     }
@@ -31,31 +34,31 @@ public class GripperController : MonoBehaviour {
         }
 
         if (transform.childCount > 0) {
-            Transform itemTransform = transform.GetChild(0);
+            childArticulationBody.transform.parent = _itemsParentTransform;
 
-            itemTransform.parent = _itemsParentTransform;
+            childArticulationBody.enabled = true;
 
-            itemTransform.gameObject.GetComponent<ArticulationBody>().enabled = true;
+            childArticulationBody = null;
         }
     }
 
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.tag == _cartController.GetItemTag()) {
-            _collidingItemTransforms.Add(collision.transform);
+            _collidingItemArticulationBodies.Add(collision.articulationBody);
         }
     }
 
     private void OnCollisionExit(Collision collision) {
-        _collidingItemTransforms.RemoveAll(c => c == collision.transform);
+        _collidingItemArticulationBodies.RemoveAll(c => c == collision.articulationBody);
     }
 
     private void OnTriggerEnter(Collider collider) {
         if (collider.tag == _cartController.GetItemTag()) {
-            _triggeringItemTransforms.Add(collider.transform);
+            _triggeringItemArticulationBodies.Add(collider.attachedArticulationBody);
         }
     }
 
     private void OnTriggerExit(Collider collider) {
-        _triggeringItemTransforms.RemoveAll(c => c == collider.transform);
+        _triggeringItemArticulationBodies.RemoveAll(c => c == collider.attachedArticulationBody);
     }
 }
