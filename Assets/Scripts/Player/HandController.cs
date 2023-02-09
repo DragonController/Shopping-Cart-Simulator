@@ -14,6 +14,8 @@ public class HandController : MonoBehaviour {
 
     private float grabSpeed;
 
+    private Vector2 look;
+
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -62,14 +64,23 @@ public class HandController : MonoBehaviour {
         
         _wristArticulationBody.SetDriveTargets(_driveTargets);
         
-        Vector2 look = _cartController.GetLook();
+        // Vector2 look = _cartController.GetLook();
         float grab = _cartController.GetGrab();
+
+        print(look);
 
         _driveTargetVelocities[7] = look.x;
         _driveTargetVelocities[9] = -look.y;
+
+        look = Vector2.zero;
+
         _driveTargetVelocities[12] = grab;
         _driveTargetVelocities[13] = grab;
 
         _wristArticulationBody.SetDriveTargetVelocities(_driveTargetVelocities);
+    }
+
+    private void Update() {
+        look += _cartController.GetLook() * Time.deltaTime;
     }
 }

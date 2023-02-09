@@ -2485,8 +2485,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _halfMoveForce: 25000
-  _lookSpeed: 1
-  _grabSpeed: 1
+  _lookSpeed: 20
+  _grabSpeed: 5
   _targetTransform: {fileID: 1623146133}
 --- !u!64 &1288792779
 MeshCollider:
