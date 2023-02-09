@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CartController : MonoBehaviour {
-    [SerializeField] private float _halfMoveForce, _lookSpeed, _grabSpeed;
+    [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed;
 
     [SerializeField] private Transform _targetTransform;
 
@@ -29,8 +29,8 @@ public class CartController : MonoBehaviour {
     private void FixedUpdate() {
         Vector2 move = _moveAction.ReadValue<Vector2>() * Time.fixedDeltaTime;
 
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (move.x + move.y) * _halfMoveForce), transform.TransformPoint(-0.2794f, 0.0f, -0.5207f));
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (-move.x + move.y) * _halfMoveForce), transform.TransformPoint(0.2794f, 0.0f, -0.5207f));
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (move.x + move.y) * _halfMoveAcceleration * _articulationBody.mass), transform.TransformPoint(-0.2794f, 0.0f, -0.5207f));
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (-move.x + move.y) * _halfMoveAcceleration * _articulationBody.mass), transform.TransformPoint(0.2794f, 0.0f, -0.5207f));
 
         // print(move.x + move.y);
         // print(-move.x + move.y);

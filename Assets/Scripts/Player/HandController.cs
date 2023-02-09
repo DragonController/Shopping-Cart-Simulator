@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class HandController : MonoBehaviour {
     private CartController _cartController;
-    private Transform _cartTransform, _shoulderTransform, _targetTransform;
+    private Transform _cartTransform, _shoulderSwivelTransform, _shoulderTransform, _targetTransform;
     private Vector3 _shoulderRelativePosition;
 
     private ArticulationBody _wristArticulationBody;
@@ -22,6 +22,7 @@ public class HandController : MonoBehaviour {
         _wristArticulationBody = GetComponent<ArticulationBody>();
 
         _shoulderTransform = transform.parent.parent;
+        _shoulderSwivelTransform = _shoulderTransform.parent;
 
         _cartTransform = _shoulderTransform.parent.parent;
         
@@ -67,7 +68,7 @@ public class HandController : MonoBehaviour {
         // Vector2 look = _cartController.GetLook();
         float grab = _cartController.GetGrab();
 
-        print(look);
+        // _driveTargetVelocities[6] = (180.0f - ((360.0f - ((upperArmAngles.x - _shoulderSwivelTransform.localEulerAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad / Time.fixedDeltaTime;
 
         _driveTargetVelocities[7] = look.x;
         _driveTargetVelocities[9] = -look.y;

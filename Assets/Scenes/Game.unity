@@ -424,7 +424,7 @@ ArticulationBody:
     forceLimit: 3.4028235e+38
     target: 0
     targetVelocity: 0
-    driveType: 2
+    driveType: 0
   m_YDrive:
     lowerLimit: 0
     upperLimit: 0
@@ -769,7 +769,7 @@ ArticulationBody:
   m_ImplicitTensor: 1
   m_Immovable: 0
   m_UseGravity: 1
-  m_CollisionDetectionMode: 1
+  m_CollisionDetectionMode: 2
 --- !u!64 &399449091
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1255,7 +1255,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 513269433}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7055563, y: 0.046801202, z: -0.046801202, w: 0.7055563}
   m_LocalPosition: {x: 0, y: 0.627, z: -0.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1263,7 +1263,7 @@ Transform:
   - {fileID: 551835263}
   m_Father: {fileID: 1288792775}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: -7.59}
 --- !u!171741748 &513269435
 ArticulationBody:
   m_ObjectHideFlags: 0
@@ -1290,7 +1290,7 @@ ArticulationBody:
     lowerLimit: 0
     upperLimit: 0
     stiffness: 1e+10
-    damping: 0
+    damping: 1e+9
     forceLimit: 3.4028235e+38
     target: 0
     targetVelocity: 0
@@ -1387,12 +1387,12 @@ ArticulationBody:
   m_LinearZ: 2
   m_SwingY: 2
   m_SwingZ: 2
-  m_Twist: 1
+  m_Twist: 2
   m_XDrive:
     lowerLimit: -90
     upperLimit: 90
     stiffness: 1e+10
-    damping: 0
+    damping: 1e+9
     forceLimit: 3.4028235e+38
     target: 0
     targetVelocity: 0
@@ -1559,10 +1559,10 @@ ArticulationBody:
   m_LinearZ: 0
   m_SwingY: 2
   m_SwingZ: 0
-  m_Twist: 2
+  m_Twist: 1
   m_XDrive:
-    lowerLimit: 0
-    upperLimit: 0
+    lowerLimit: -90
+    upperLimit: 90
     stiffness: 0
     damping: 1e+10
     forceLimit: 3.4028235e+38
@@ -1664,7 +1664,7 @@ GameObject:
   - component: {fileID: 940665831}
   - component: {fileID: 940665830}
   m_Layer: 3
-  m_Name: Base
+  m_Name: Cart Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1763,7 +1763,7 @@ GameObject:
   - component: {fileID: 1052190266}
   - component: {fileID: 1052190267}
   m_Layer: 3
-  m_Name: Base (3)
+  m_Name: Cart Base (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2035,7 +2035,7 @@ GameObject:
   - component: {fileID: 1264830178}
   - component: {fileID: 1264830179}
   m_Layer: 3
-  m_Name: Base (1)
+  m_Name: Cart Base (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2384,7 +2384,7 @@ ArticulationBody:
   m_GameObject: {fileID: 1288792771}
   m_Enabled: 1
   serializedVersion: 5
-  m_Mass: 25.8548
+  m_Mass: 2585.48
   m_ParentAnchorPosition: {x: 0, y: 0.5, z: 0}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
   m_AnchorPosition: {x: 0, y: -0.5207, z: 0}
@@ -2484,8 +2484,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05fdac262f3e1042b126a1fb0b97887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _halfMoveForce: 25000
-  _lookSpeed: 20
+  _halfMoveAcceleration: 500
+  _lookSpeed: 50
   _grabSpeed: 5
   _targetTransform: {fileID: 1623146133}
 --- !u!64 &1288792779
@@ -2701,7 +2701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1623146133
 Transform:
   m_ObjectHideFlags: 0
@@ -2724,7 +2724,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1623146132}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2778,7 +2778,7 @@ GameObject:
   - component: {fileID: 1641598165}
   - component: {fileID: 1641598166}
   m_Layer: 3
-  m_Name: Base (2)
+  m_Name: Cart Base (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
