@@ -39,20 +39,21 @@ public class HandController : MonoBehaviour {
         Vector3 posDifference = _targetTransform.position - _shoulderTransform.TransformPoint(_shoulderRelativePosition);
         float targetDistance = posDifference.magnitude;
 
-        Vector2 upperArmAngles = new Vector2(Mathf.Atan2(posDifference.y, targetDistance) * Mathf.Rad2Deg, Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y);
+        Vector2 upperArmAngles = new Vector2(Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y, Mathf.Atan2(posDifference.y, targetDistance) * Mathf.Rad2Deg);
         float elbowAngle = 0.0f;
         float wristAngle = Mathf.Atan2(posDifference.y, targetDistance) * Mathf.Rad2Deg;
 
         if (_upperArmLength + _lowerArmLength > targetDistance) {
-            upperArmAngles = new Vector2((Mathf.Atan2(posDifference.y, targetDistance) + Mathf.Acos((_upperArmLength * _upperArmLength + targetDistance * targetDistance - _lowerArmLength * _lowerArmLength) / (2.0f * _upperArmLength * targetDistance))) * Mathf.Rad2Deg, Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y);
+            upperArmAngles = new Vector2(Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y, (Mathf.Atan2(posDifference.y, targetDistance) + Mathf.Acos((_upperArmLength * _upperArmLength + targetDistance * targetDistance - _lowerArmLength * _lowerArmLength) / (2.0f * _upperArmLength * targetDistance))) * Mathf.Rad2Deg);
             elbowAngle = 180.0f - Mathf.Acos((_upperArmLength * _upperArmLength + _lowerArmLength * _lowerArmLength - targetDistance * targetDistance) / (2.0f * _upperArmLength * _lowerArmLength)) * Mathf.Rad2Deg;
             wristAngle = (-Mathf.Acos((_lowerArmLength * _lowerArmLength + targetDistance * targetDistance - _upperArmLength * _upperArmLength) / (2.0f * _lowerArmLength * targetDistance)) + Mathf.Atan2(posDifference.y, targetDistance)) * Mathf.Rad2Deg;
         }
 
-        _driveTargets[6] += (180.0f - ((360.0f - ((upperArmAngles.y - _driveTargets[6] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
-        _driveTargets[8] += (180.0f - ((360.0f - ((-upperArmAngles.x - _driveTargets[8] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[6] += (180.0f - ((360.0f - ((upperArmAngles.x - _driveTargets[6] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[8] -= (180.0f - ((360.0f - ((-upperArmAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
         _driveTargets[10] = (180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
         _driveTargets[11] = (180.0f - ((360.0f - ((wristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        
         _wristArticulationBody.SetDriveTargets(_driveTargets);
         
         Vector2 look = _cartController.GetLook() * Time.fixedDeltaTime;

@@ -1387,10 +1387,10 @@ ArticulationBody:
   m_LinearZ: 2
   m_SwingY: 2
   m_SwingZ: 2
-  m_Twist: 2
+  m_Twist: 1
   m_XDrive:
-    lowerLimit: 0
-    upperLimit: 0
+    lowerLimit: -90
+    upperLimit: 90
     stiffness: 1e+10
     damping: 0
     forceLimit: 3.4028235e+38
