@@ -5,8 +5,6 @@ public class CartController : MonoBehaviour {
     [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed;
 
     [SerializeField] private Transform _targetTransform;
-
-    [SerializeField] private ConfigurableJoint _itemJoint;
     
     [SerializeField] private string _itemTag;
 
@@ -16,6 +14,8 @@ public class CartController : MonoBehaviour {
     private bool _grab = false;
 
     private ArticulationBody _articulationBody;
+
+    private FixedJoint _itemJoint;
     
     private void Start() {
         _playerInput = GetComponent<PlayerInput>();
@@ -64,11 +64,11 @@ public class CartController : MonoBehaviour {
         return -_grabSpeed;
     }
 
-    public ConfigurableJoint GetItemJoint() {
+    public FixedJoint GetItemJoint() {
         return _itemJoint;
     }
 
-    public void SetItemJoint(ConfigurableJoint itemJoint) {
+    public void SetItemJoint(FixedJoint itemJoint) {
         _itemJoint = itemJoint;
     }
 

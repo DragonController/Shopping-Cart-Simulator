@@ -6,7 +6,8 @@ public class GripperController : MonoBehaviour {
 
     private ArticulationBody _gripperArticulationBody;
 
-    private List<GameObject> _triggeringItemGameObjects = new List<GameObject>();
+    private List<GameObject> _collidingItems = new List<GameObject>();
+    private List<GameObject> _triggeringItems = new List<GameObject>();
 
     private void Start() {
         _cartController = transform.parent.parent.parent.parent.parent.gameObject.GetComponent<CartController>();
@@ -15,19 +16,19 @@ public class GripperController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        ConfigurableJoint _itemJoint = _cartController.GetItemJoint();
+        FixedJoint _itemJoint = _cartController.GetItemJoint();
 
         if (_cartController.IsGrabbing()) {
-            if (_itemJoint == null && _triggeringItemGameObjects.Count > 0) {
-                _itemJoint = _triggeringItemGameObjects[0].AddComponent<ConfigurableJoint>() as ConfigurableJoint;
+            if (_itemJoint == null) {
+                foreach (GameObject triggeringItem in  _triggeringItems) {
+                    if (_collidingItems.Contains(triggeringItem)) {
+                        _itemJoint = triggeringItem.AddComponent<FixedJoint>() as FixedJoint;
 
-                _itemJoint.connectedArticulationBody = _gripperArticulationBody;
-                _itemJoint.xMotion = ConfigurableJointMotion.Locked;
-                _itemJoint.yMotion = ConfigurableJointMotion.Locked;
-                _itemJoint.zMotion = ConfigurableJointMotion.Locked;
-                _itemJoint.enableCollision = true;
+                        _itemJoint.connectedArticulationBody = _gripperArticulationBody;
 
-                _cartController.SetItemJoint(_itemJoint);
+                        _cartController.SetItemJoint(_itemJoint);
+                    }
+                }
             }
 
             return;
@@ -38,13 +39,23 @@ public class GripperController : MonoBehaviour {
         }
     }
 
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.tag == _cartController.GetItemTag()) {
+            _collidingItems.Add(collision.gameObject);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision) {
+        _collidingItems.Remove(collision.gameObject);
+    }
+
     private void OnTriggerEnter(Collider collider) {
         if (collider.tag == _cartController.GetItemTag()) {
-            _triggeringItemGameObjects.Add(collider.gameObject);
+            _triggeringItems.Add(collider.gameObject);
         }
     }
 
     private void OnTriggerExit(Collider collider) {
-        _triggeringItemGameObjects.Remove(collider.gameObject);
+        _triggeringItems.Remove(collider.gameObject);
     }
 }

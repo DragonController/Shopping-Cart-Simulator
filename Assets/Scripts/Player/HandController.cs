@@ -38,13 +38,16 @@ public class HandController : MonoBehaviour {
         _cartController = _cartTransform.gameObject.GetComponent<CartController>();
         _targetTransform = _cartController.GetTargetTransform();
 
-        _wristArticulationBody.GetDriveTargets(_driveTargets);
+        // _wristArticulationBody.GetDriveTargets(_driveTargets);
         _wristArticulationBody.GetDriveTargetVelocities(_driveTargetVelocities);
 
         grabSpeed = (Mathf.Abs(_driveTargetVelocities[12]) + Mathf.Abs(_driveTargetVelocities[13])) * 0.5f;
     }
 
     private void FixedUpdate() {
+        _wristArticulationBody.GetDriveTargets(_driveTargets);
+        _wristArticulationBody.GetDriveTargetVelocities(_driveTargetVelocities);
+
         Vector3 posDifference = _targetTransform.position - _shoulderTransform.TransformPoint(_shoulderRelativePosition);
         float targetDistance = posDifference.magnitude;
 
