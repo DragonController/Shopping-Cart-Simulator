@@ -2,13 +2,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CartController : MonoBehaviour {
-    [SerializeField] private float _halfMoveForce;
-    [SerializeField] private float _lookSpeed;
+    [SerializeField] private float _halfMoveForce, _lookSpeed, _grabSpeed;
 
     [SerializeField] private Transform _targetTransform;
 
     private PlayerInput _playerInput;
     private InputAction _moveAction, _lookAction, _grabAction, _retractAction, _pauseAction;
+
+    private bool _grab = false;
 
     private ArticulationBody _articulationBody;
     
@@ -17,6 +18,8 @@ public class CartController : MonoBehaviour {
         _moveAction = _playerInput.actions["Move"];
         _lookAction = _playerInput.actions["Look"];
         _grabAction = _playerInput.actions["Grab"];
+        _grabAction.performed += _ => _grab = true;
+        _grabAction.canceled += _ => _grab = false;
         _retractAction = _playerInput.actions["Retract"];
         _pauseAction = _playerInput.actions["Pause"];
 
@@ -43,5 +46,13 @@ public class CartController : MonoBehaviour {
 
     public Vector2 GetLook() {
         return _lookAction.ReadValue<Vector2>() * _lookSpeed;
+    }
+
+    public float GetGrab() {
+        if (_grab) {
+            return _grabSpeed;
+        }
+
+        return -_grabSpeed;
     }
 }

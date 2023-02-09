@@ -12,7 +12,11 @@ public class HandController : MonoBehaviour {
 
     private float _upperArmLength, _lowerArmLength;
 
+    private float grabSpeed;
+
     private void Start() {
+        Cursor.lockState = CursorLockMode.Locked;
+
         _wristArticulationBody = GetComponent<ArticulationBody>();
 
         _shoulderTransform = transform.parent.parent;
@@ -33,6 +37,8 @@ public class HandController : MonoBehaviour {
 
         _wristArticulationBody.GetDriveTargets(_driveTargets);
         _wristArticulationBody.GetDriveTargetVelocities(_driveTargetVelocities);
+
+        grabSpeed = (Mathf.Abs(_driveTargetVelocities[12]) + Mathf.Abs(_driveTargetVelocities[13])) * 0.5f;
     }
 
     private void FixedUpdate() {
@@ -50,16 +56,19 @@ public class HandController : MonoBehaviour {
         }
 
         _driveTargets[6] += (180.0f - ((360.0f - ((upperArmAngles.x - _driveTargets[6] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
-        _driveTargets[8] -= (180.0f - ((360.0f - ((-upperArmAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[8] = (180.0f - ((360.0f - ((-upperArmAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
         _driveTargets[10] = (180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
         _driveTargets[11] = (180.0f - ((360.0f - ((wristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
         
         _wristArticulationBody.SetDriveTargets(_driveTargets);
         
-        Vector2 look = _cartController.GetLook() * Time.fixedDeltaTime;
+        Vector2 look = _cartController.GetLook();
+        float grab = _cartController.GetGrab();
 
         _driveTargetVelocities[7] = look.x;
         _driveTargetVelocities[9] = -look.y;
+        _driveTargetVelocities[12] = grab;
+        _driveTargetVelocities[13] = grab;
 
         _wristArticulationBody.SetDriveTargetVelocities(_driveTargetVelocities);
     }
