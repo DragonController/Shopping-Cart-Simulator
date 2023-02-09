@@ -30,21 +30,14 @@ public class HandController : MonoBehaviour {
 
         _cartController = _cartTransform.gameObject.GetComponent<CartController>();
         _targetTransform = _cartController.GetTargetTransform();
+
+        _wristArticulationBody.GetDriveTargets(_driveTargets);
+        _wristArticulationBody.GetDriveTargetVelocities(_driveTargetVelocities);
     }
 
     private void FixedUpdate() {
         Vector3 posDifference = _targetTransform.position - _shoulderTransform.TransformPoint(_shoulderRelativePosition);
         float targetDistance = posDifference.magnitude;
-
-        _driveTargets.Clear();
-        _driveTargets.Add(0.0f);
-        _driveTargets.Add(0.0f);
-        _driveTargets.Add(0.0f);
-        _driveTargets.Add(0.0f);
-        _driveTargets.Add(0.0f);
-        _driveTargets.Add(0.0f);
-        _driveTargets.Add(0.0f);
-        _driveTargets.Add(0.0f);
 
         Quaternion rotation = Quaternion.Euler(Mathf.Atan2(posDifference.y, targetDistance) * Mathf.Rad2Deg, 0.0f, Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y);
         float elbowAngle = 0.0f;
@@ -58,28 +51,14 @@ public class HandController : MonoBehaviour {
 
         _shoulderArticulationBody.anchorRotation = rotation;
 
-        _driveTargets.Add((180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
-        _driveTargets.Add((180.0f - ((360.0f - ((wristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad);
-        _driveTargets.Add(0.0f);
-        _driveTargets.Add(0.0f);
+        _driveTargets[8] = (180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[9] = (180.0f - ((360.0f - ((wristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
         _wristArticulationBody.SetDriveTargets(_driveTargets);
-
-        _driveTargetVelocities.Clear();
-        _driveTargetVelocities.Add(0.0f);
-        _driveTargetVelocities.Add(0.0f);
-        _driveTargetVelocities.Add(0.0f);
-        _driveTargetVelocities.Add(0.0f);
-        _driveTargetVelocities.Add(0.0f);
-        _driveTargetVelocities.Add(0.0f);
         
         Vector2 look = _cartController.GetLook() * Time.fixedDeltaTime;
-        print(look);
-        _driveTargetVelocities.Add(look.x);
-        _driveTargetVelocities.Add(-look.y);
-        _driveTargetVelocities.Add(0.0f);
-        _driveTargetVelocities.Add(0.0f);
-        _driveTargetVelocities.Add(0.0f);
-        _driveTargetVelocities.Add(0.0f);
+
+        _driveTargetVelocities[6] = (look.x);
+        _driveTargetVelocities[7] = (-look.y);
 
         _wristArticulationBody.SetDriveTargetVelocities(_driveTargetVelocities);
     }
