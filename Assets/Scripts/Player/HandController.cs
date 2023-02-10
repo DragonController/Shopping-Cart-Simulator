@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class HandController : MonoBehaviour {
     private CartController _cartController;
-    private Transform _cartTransform, _shoulderSwivelTransform, _shoulderTransform, _targetTransform;
-    private Vector3 _shoulderRelativePosition;
+    private Transform _cartTransform, _shoulderSwivelTransform, _shoulderTransform, _elbowTransform, _targetTransform;
+    private Vector3 _shoulderRelativePosition, _elbowRelativePosition;
 
     private ArticulationBody _wristArticulationBody;
     private List<float> _driveTargets = new List<float>();
@@ -21,15 +21,17 @@ public class HandController : MonoBehaviour {
 
         _wristArticulationBody = GetComponent<ArticulationBody>();
 
-        _shoulderTransform = transform.parent.parent;
+        _elbowTransform = transform.parent;
+        _shoulderTransform = _elbowTransform.parent;
         _shoulderSwivelTransform = _shoulderTransform.parent;
 
         _cartTransform = _shoulderTransform.parent.parent;
         
         _shoulderRelativePosition = _shoulderTransform.gameObject.GetComponent<ArticulationBody>().anchorPosition;
+        _elbowRelativePosition = _elbowTransform.gameObject.GetComponent<ArticulationBody>().anchorPosition;
 
         Vector3 _shoulderPosition = _shoulderTransform.TransformPoint(_shoulderRelativePosition);
-        Vector3 _elbowPosition = transform.parent.TransformPoint(transform.parent.gameObject.GetComponent<ArticulationBody>().anchorPosition);
+        Vector3 _elbowPosition = _elbowTransform.TransformPoint(_elbowRelativePosition);
         Vector3 _wristPosition = transform.TransformPoint(_wristArticulationBody.anchorPosition);
 
         _upperArmLength = Vector3.Distance(_shoulderPosition, _elbowPosition);
@@ -45,23 +47,37 @@ public class HandController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        Vector3 posDifference = _targetTransform.position - _shoulderTransform.TransformPoint(_shoulderRelativePosition);
-        float targetDistance = posDifference.magnitude;
+        // print(_shoulderSwivelTransform.localEulerAngles);
+        // print(_elbowTransform.localEulerAngles);
 
-        Vector2 upperArmAngles = new Vector2(Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y, Mathf.Atan2(posDifference.y, targetDistance) * Mathf.Rad2Deg);
-        float elbowAngle = 0.0f;
-        float wristAngle = Mathf.Atan2(posDifference.y, targetDistance) * Mathf.Rad2Deg;
+        Vector3 shoulderDifference = _targetTransform.position - _shoulderTransform.TransformPoint(_shoulderRelativePosition);
+        float shoulderDistance = shoulderDifference.magnitude;
+        Vector3 elbowDifference = _targetTransform.position - _elbowTransform.TransformPoint(_elbowRelativePosition);
+        float elbowDistance = elbowDifference.magnitude;
 
-        if (_upperArmLength + _lowerArmLength > targetDistance) {
-            upperArmAngles = new Vector2(Mathf.Atan2(posDifference.x, posDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y, (Mathf.Atan2(posDifference.y, targetDistance) + Mathf.Acos((_upperArmLength * _upperArmLength + targetDistance * targetDistance - _lowerArmLength * _lowerArmLength) / (2.0f * _upperArmLength * targetDistance))) * Mathf.Rad2Deg);
-            elbowAngle = 180.0f - Mathf.Acos((_upperArmLength * _upperArmLength + _lowerArmLength * _lowerArmLength - targetDistance * targetDistance) / (2.0f * _upperArmLength * _lowerArmLength)) * Mathf.Rad2Deg;
-            wristAngle = (-Mathf.Acos((_lowerArmLength * _lowerArmLength + targetDistance * targetDistance - _upperArmLength * _upperArmLength) / (2.0f * _lowerArmLength * targetDistance)) + Mathf.Atan2(posDifference.y, targetDistance)) * Mathf.Rad2Deg;
+        float oldShoulderAngle = 90.0f - _shoulderTransform.localEulerAngles.x;
+        float oldElbowAngle = _elbowTransform.localEulerAngles.x;
+
+        if (_shoulderTransform.localEulerAngles.y + _shoulderTransform.localEulerAngles.z > 180.0f) {
+            oldShoulderAngle = _shoulderTransform.localEulerAngles.x - 90.0f;
+        }
+        if (_elbowTransform.localEulerAngles.y + _elbowTransform.localEulerAngles.z > 180.0f) {
+            oldElbowAngle = 180.0f - _elbowTransform.localEulerAngles.x;
         }
 
-        _driveTargets[6] += (180.0f - ((360.0f - ((upperArmAngles.x - _driveTargets[6] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
-        _driveTargets[8] = (180.0f - ((360.0f - ((-upperArmAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
-        _driveTargets[10] = (180.0f - ((360.0f - ((elbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
-        _driveTargets[11] = (180.0f - ((360.0f - ((wristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        Vector2 newShoulderAngles = new Vector2(Mathf.Atan2(shoulderDifference.x, shoulderDifference.z) * Mathf.Rad2Deg - _cartTransform.eulerAngles.y, -Mathf.Asin(shoulderDifference.y / shoulderDistance) * Mathf.Rad2Deg);
+
+        if (_upperArmLength + _lowerArmLength > shoulderDistance) {
+            newShoulderAngles.y -= Mathf.Acos((_upperArmLength * _upperArmLength + shoulderDistance * shoulderDistance - _lowerArmLength * _lowerArmLength) / (2.0f * _upperArmLength * shoulderDistance)) * Mathf.Rad2Deg;
+        }
+
+        float newElbowAngle = oldShoulderAngle - Mathf.Asin(elbowDifference.y / elbowDistance) * Mathf.Rad2Deg;
+        float newWristAngle = oldShoulderAngle - oldElbowAngle;
+
+        _driveTargets[6] += (180.0f - ((360.0f - ((newShoulderAngles.x - _driveTargets[6] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[8] = (180.0f - ((360.0f - ((newShoulderAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[10] = (180.0f - ((360.0f - ((newElbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[11] = (180.0f - ((360.0f - ((newWristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
         
         _wristArticulationBody.SetDriveTargets(_driveTargets);
         
