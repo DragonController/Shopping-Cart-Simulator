@@ -9,11 +9,13 @@ public class GripperController : MonoBehaviour {
     private List<ArticulationBody> _triggeringItemArticulationBodies = new List<ArticulationBody>();
     private ArticulationBody _articulationBody, _childArticulationBody;
 
+    private Vector3 _defaultCenterOfMass;
     private float _defaultMass;
 
     private void Start() {
         _articulationBody = GetComponent<ArticulationBody>();
 
+        _defaultCenterOfMass = _articulationBody.centerOfMass;
         _defaultMass = _articulationBody.mass;
 
         _cartController = transform.parent.parent.parent.parent.parent.gameObject.GetComponent<CartController>();
@@ -49,8 +51,8 @@ public class GripperController : MonoBehaviour {
 
             _childArticulationBody = null;
 
+            _articulationBody.centerOfMass = _defaultCenterOfMass;
             _articulationBody.mass = _defaultMass;
-            _articulationBody.ResetCenterOfMass();
         }
     }
 

@@ -30,34 +30,32 @@ public class HandController : MonoBehaviour {
         _shoulderRelativePosition = _shoulderTransform.gameObject.GetComponent<ArticulationBody>().anchorPosition;
         _elbowRelativePosition = _elbowTransform.gameObject.GetComponent<ArticulationBody>().anchorPosition;
 
-        Vector3 _shoulderPosition = _shoulderTransform.TransformPoint(_shoulderRelativePosition);
-        Vector3 _elbowPosition = _elbowTransform.TransformPoint(_elbowRelativePosition);
-        Vector3 _wristPosition = transform.TransformPoint(_wristArticulationBody.anchorPosition);
+        Vector3 shoulderPosition = _shoulderTransform.TransformPoint(_shoulderRelativePosition);
+        Vector3 elbowPosition = _elbowTransform.TransformPoint(_elbowRelativePosition);
+        Vector3 wristPosition = transform.TransformPoint(_wristArticulationBody.anchorPosition);
 
-        _upperArmLength = Vector3.Distance(_shoulderPosition, _elbowPosition);
-        _lowerArmLength = Vector3.Distance(_elbowPosition, _wristPosition);
+        _upperArmLength = Vector3.Distance(shoulderPosition, elbowPosition);
+        _lowerArmLength = Vector3.Distance(elbowPosition, wristPosition);
 
         _cartController = _cartTransform.gameObject.GetComponent<CartController>();
+
         _targetTransform = _cartController.GetTargetTransform();
 
         _wristArticulationBody.GetDriveTargets(_driveTargets);
         _wristArticulationBody.GetDriveTargetVelocities(_driveTargetVelocities);
 
+        _minTargetLocalPos = _cartController.GetMinTargetTransform().localPosition;
         _maxTargetLocalPos = _targetTransform.localPosition;
-        _minTargetLocalPos = _maxTargetLocalPos * 0.5f;
     }
 
     private void FixedUpdate() {
         _targetTransform.localPosition = Vector3.Lerp(_maxTargetLocalPos, _minTargetLocalPos, _cartController.GetRetractDistance());
-        // if (_cartController.GetRetract()) {
-        //     _targetTransform.localPosition = Vector3.MoveTowards(_targetTransform.localPosition, _minTargetLocalPos, retractSpeed);
-        // } else {
-        //     _targetTransform.localPosition = Vector3.MoveTowards(_targetTransform.localPosition, _maxTargetLocalPos, retractSpeed);
-        // }
 
-        Vector3 shoulderDifference = _targetTransform.position - _shoulderTransform.TransformPoint(_shoulderRelativePosition);
+        Vector3 shoulderPosition = _shoulderTransform.TransformPoint(_shoulderRelativePosition);
+        Vector3 shoulderDifference = _targetTransform.position - shoulderPosition;
         float shoulderDistance = shoulderDifference.magnitude;
-        Vector3 elbowDifference = _targetTransform.position - _elbowTransform.TransformPoint(_elbowRelativePosition);
+        Vector3 elbowPosition = _elbowTransform.TransformPoint(_elbowRelativePosition);
+        Vector3 elbowDifference = _targetTransform.position - elbowPosition;
         float elbowDistance = elbowDifference.magnitude;
 
         float oldShoulderAngle = 90.0f - _shoulderTransform.localEulerAngles.x;
@@ -78,6 +76,11 @@ public class HandController : MonoBehaviour {
 
         float newElbowAngle = oldShoulderAngle - Mathf.Asin(elbowDifference.y / elbowDistance) * Mathf.Rad2Deg;
         float newWristAngle = oldShoulderAngle - oldElbowAngle;
+
+        print(Mathf.Asin(elbowDifference.y / elbowDistance) * Mathf.Rad2Deg);
+        if (new Vector2(shoulderDifference.x, shoulderDifference.z).magnitude < Vector2.Distance(new Vector2(elbowPosition.x, elbowPosition.z), new Vector2(shoulderPosition.x, shoulderPosition.z))) {
+            newElbowAngle = oldShoulderAngle + Mathf.Asin(elbowDifference.y / elbowDistance) * Mathf.Rad2Deg + 180.0f;
+        }
 
         _driveTargets[6] += (180.0f - ((360.0f - ((newShoulderAngles.x - _driveTargets[6] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
         _driveTargets[8] = (180.0f - ((360.0f - ((newShoulderAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;

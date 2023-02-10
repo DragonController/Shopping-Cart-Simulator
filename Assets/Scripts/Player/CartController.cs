@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class CartController : MonoBehaviour {
     [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed, _retractSpeed;
 
-    [SerializeField] private Transform _targetTransform, _itemsParentTransform;
+    [SerializeField] private Transform _minTargetTransform, _maxTargetTransform, _itemsParentTransform;
     
     [SerializeField] private string _itemTag;
     [SerializeField] private string _keyboardControlScheme, _gamepadControlScheme;
@@ -32,7 +32,7 @@ public class CartController : MonoBehaviour {
 
         _articulationBody = GetComponent<ArticulationBody>();
 
-        _retractSpeedMultiplier = 2.0f / _targetTransform.localPosition.magnitude;
+        _retractSpeedMultiplier = 1.0f / Vector3.Distance(_minTargetTransform.localPosition, _maxTargetTransform.localPosition);
     }
 
     private void FixedUpdate() {
@@ -51,18 +51,20 @@ public class CartController : MonoBehaviour {
 
     private void Update() {
         if (_playerInput.currentControlScheme == _keyboardControlScheme && !Mathf.Approximately(_retractAction.ReadValue<float>(), 0.0f)) {
-            _retractDistance = Mathf.Clamp(_retractDistance - Mathf.Sign(_retractAction.ReadValue<float>()) * _retractSpeed * _retractSpeedMultiplier, 0.0f, 1.0f);
+            _retractDistance = Mathf.Clamp(_retractDistance - Mathf.Sign(_retractAction.ReadValue<float>()) * _retractSpeed * _retractSpeedMultiplier * Time.deltaTime, 0.0f, 1.0f);
         }
 
         if (_playerInput.currentControlScheme == _gamepadControlScheme) {
             _retractDistance = _retractAction.ReadValue<float>();
         }
+    }
 
-        print(_retractDistance);
+    public Transform GetMinTargetTransform() {
+        return _minTargetTransform;
     }
 
     public Transform GetTargetTransform() {
-        return _targetTransform;
+        return _maxTargetTransform;
     }
 
     public Vector2 GetLook() {
