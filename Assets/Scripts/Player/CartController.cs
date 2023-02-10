@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class CartController : MonoBehaviour {
     [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed, _retractSpeed;
 
-    [SerializeField] private Transform _minTargetTransform, _maxTargetTransform, _itemsParentTransform;
+    [SerializeField] private Transform _minTargetTransform, _targetTransform, _maxTargetTransform, _itemsParentTransform;
     
     [SerializeField] private string _itemTag;
     [SerializeField] private string _keyboardControlScheme, _gamepadControlScheme;
@@ -64,6 +64,10 @@ public class CartController : MonoBehaviour {
     }
 
     public Transform GetTargetTransform() {
+        return _targetTransform;
+    }
+
+    public Transform GetMaxTargetTransform() {
         return _maxTargetTransform;
     }
 
