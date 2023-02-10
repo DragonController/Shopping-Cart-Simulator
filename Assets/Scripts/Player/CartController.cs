@@ -2,17 +2,21 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CartController : MonoBehaviour {
-    [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed;
+    [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed, _retractSpeed;
 
     [SerializeField] private Transform _targetTransform, _itemsParentTransform;
     
     [SerializeField] private string _itemTag;
+    [SerializeField] private string _keyboardControlScheme, _gamepadControlScheme;
 
     private PlayerInput _playerInput;
     private InputAction _moveAction, _lookAction, _grabAction, _retractAction, _pauseAction;
 
     private bool _grab = false;
     private bool _grabbingItem = false;
+
+    private float _retractDistance = 0.0f;
+    private float _retractSpeedMultiplier;
 
     private ArticulationBody _articulationBody;
     
@@ -27,6 +31,8 @@ public class CartController : MonoBehaviour {
         _pauseAction = _playerInput.actions["Pause"];
 
         _articulationBody = GetComponent<ArticulationBody>();
+
+        _retractSpeedMultiplier = 2.0f / _targetTransform.localPosition.magnitude;
     }
 
     private void FixedUpdate() {
@@ -41,6 +47,18 @@ public class CartController : MonoBehaviour {
         // Vector2 look = _moveAction.ReadValue<Vector2>();
 
         // _articulationBody.AddRelativeForce(Vector3.forward * move.y * moveForce * Time.fixedDeltaTime);
+    }
+
+    private void Update() {
+        if (_playerInput.currentControlScheme == _keyboardControlScheme && !Mathf.Approximately(_retractAction.ReadValue<float>(), 0.0f)) {
+            _retractDistance = Mathf.Clamp(_retractDistance - Mathf.Sign(_retractAction.ReadValue<float>()) * _retractSpeed * _retractSpeedMultiplier, 0.0f, 1.0f);
+        }
+
+        if (_playerInput.currentControlScheme == _gamepadControlScheme) {
+            _retractDistance = _retractAction.ReadValue<float>();
+        }
+
+        print(_retractDistance);
     }
 
     public Transform GetTargetTransform() {
@@ -63,20 +81,24 @@ public class CartController : MonoBehaviour {
         }
     }
 
-    public bool IsGrabbingItem() {
-        return _grabbingItem;
-    }
-
-    public void SetGrabbingItem(bool grabbingItem) {
-        _grabbingItem = grabbingItem;
-    }
-
-    public float GetGrab() {
+    public float GetGrabVelocity() {
         if (_grab) {
             return _grabSpeed;
         }
 
         return -_grabSpeed;
+    }
+
+    public bool IsGrabbingItem() {
+        return _grabbingItem;
+    }
+
+    public float GetRetractDistance() {
+        return _retractDistance;
+    }
+
+    public void SetGrabbingItem(bool grabbingItem) {
+        _grabbingItem = grabbingItem;
     }
 
     public Transform GetItemsParentTransform() {

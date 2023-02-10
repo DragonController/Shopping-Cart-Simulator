@@ -12,9 +12,9 @@ public class HandController : MonoBehaviour {
 
     private float _upperArmLength, _lowerArmLength;
 
-    private float grabSpeed;
+    private Vector2 _look;
 
-    private Vector2 look;
+    private Vector3 _maxTargetLocalPos, _minTargetLocalPos;
 
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -43,12 +43,17 @@ public class HandController : MonoBehaviour {
         _wristArticulationBody.GetDriveTargets(_driveTargets);
         _wristArticulationBody.GetDriveTargetVelocities(_driveTargetVelocities);
 
-        grabSpeed = (Mathf.Abs(_driveTargetVelocities[12]) + Mathf.Abs(_driveTargetVelocities[13])) * 0.5f;
+        _maxTargetLocalPos = _targetTransform.localPosition;
+        _minTargetLocalPos = _maxTargetLocalPos * 0.5f;
     }
 
     private void FixedUpdate() {
-        // print(_shoulderSwivelTransform.localEulerAngles);
-        // print(_elbowTransform.localEulerAngles);
+        _targetTransform.localPosition = Vector3.Lerp(_maxTargetLocalPos, _minTargetLocalPos, _cartController.GetRetractDistance());
+        // if (_cartController.GetRetract()) {
+        //     _targetTransform.localPosition = Vector3.MoveTowards(_targetTransform.localPosition, _minTargetLocalPos, retractSpeed);
+        // } else {
+        //     _targetTransform.localPosition = Vector3.MoveTowards(_targetTransform.localPosition, _maxTargetLocalPos, retractSpeed);
+        // }
 
         Vector3 shoulderDifference = _targetTransform.position - _shoulderTransform.TransformPoint(_shoulderRelativePosition);
         float shoulderDistance = shoulderDifference.magnitude;
@@ -81,14 +86,14 @@ public class HandController : MonoBehaviour {
         
         _wristArticulationBody.SetDriveTargets(_driveTargets);
         
-        float grab = _cartController.GetGrab() * Mathf.Deg2Rad;
+        float grab = _cartController.GetGrabVelocity() * Mathf.Deg2Rad;
 
         // _driveTargetVelocities[6] = (180.0f - ((360.0f - ((upperArmAngles.x - _shoulderSwivelTransform.localEulerAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad / Time.fixedDeltaTime;
 
-        _driveTargetVelocities[7] = look.x;
-        _driveTargetVelocities[9] = -look.y;
+        _driveTargetVelocities[7] = _look.x;
+        _driveTargetVelocities[9] = -_look.y;
 
-        look = Vector2.zero;
+        _look = Vector2.zero;
 
         _driveTargetVelocities[12] = grab;
         _driveTargetVelocities[13] = grab;
@@ -97,6 +102,6 @@ public class HandController : MonoBehaviour {
     }
 
     private void Update() {
-        look += _cartController.GetLook() * Time.deltaTime;
+        _look += _cartController.GetLook() * Time.deltaTime;
     }
 }
