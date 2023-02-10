@@ -82,7 +82,7 @@ public class HandController : MonoBehaviour {
         float newWristAngle = oldShoulderAngle - oldElbowAngle;
 
         if (new Vector2(shoulderDifference.x, shoulderDifference.z).magnitude < Vector2.Distance(new Vector2(elbowPosition.x, elbowPosition.z), new Vector2(shoulderPosition.x, shoulderPosition.z))) {
-            if (Mathf.Abs(oldShoulderAngle) < 90.0f) {
+            if ((360.0f - ((oldShoulderAngle + 90.0f) % 360.0f)) % 360.0f > 180.0f) {
                 newElbowAngle = oldShoulderAngle + Mathf.Asin(elbowDifference.y / elbowDistance) * Mathf.Rad2Deg + 180.0f;
             }
         }
