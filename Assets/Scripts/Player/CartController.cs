@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CartController : MonoBehaviour {
     [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed, _retractSpeed;
+    [SerializeField] private float _minHandY;
 
     [SerializeField] private Transform _minTargetTransform, _targetTransform, _maxTargetTransform, _itemsParentTransform;
     
@@ -112,5 +113,9 @@ public class CartController : MonoBehaviour {
 
     public string GetItemTag() {
         return _itemTag;
+    }
+
+    public float GetMinHandY() {
+        return _minHandY;
     }
 }

@@ -53,6 +53,8 @@ public class HandController : MonoBehaviour {
         _targetTransform.localPosition = Vector3.Lerp(_maxTargetLocalPos, _minTargetLocalPos, _cartController.GetRetractDistance());
 
         Vector3 targetPosition = _targetTransform.position;
+        targetPosition.y = Mathf.Max(targetPosition.y, _cartController.GetMinHandY());
+        print(targetPosition);
         Vector3 maxTargetPosition = _maxTargetTransform.position;
         Vector3 shoulderPosition = _shoulderTransform.TransformPoint(_shoulderRelativePosition);
         Vector3 shoulderDifference = targetPosition - shoulderPosition;
