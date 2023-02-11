@@ -10,7 +10,7 @@ public class CartController : MonoBehaviour {
     [SerializeField] private string _keyboardControlScheme, _gamepadControlScheme;
 
     private PlayerInput _playerInput;
-    private InputAction _moveAction, _lookAction, _grabAction, _retractAction, _pauseAction;
+    private InputAction _moveAction, _lookAction, _grabAction, _retractAction;
 
     private bool _grab = false;
     private bool _grabbingItem = false;
@@ -28,7 +28,6 @@ public class CartController : MonoBehaviour {
         _grabAction.performed += _ => SetGrab(true);
         _grabAction.canceled += _ => SetGrab(false);
         _retractAction = _playerInput.actions["Retract"];
-        _pauseAction = _playerInput.actions["Pause"];
 
         _articulationBody = GetComponent<ArticulationBody>();
 
