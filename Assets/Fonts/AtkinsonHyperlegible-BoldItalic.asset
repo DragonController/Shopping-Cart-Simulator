@@ -108,9 +108,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: AtkinsonHyperlegible-BoldItalic
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 905374723
   material: {fileID: -7975379723936087994}
-  materialHashCode: 0
+  materialHashCode: 556856259
   m_Version: 1.1.0
   m_SourceFontFileGUID: 1e336dfd3e95a9b409fa21efe056c5ab
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 1e336dfd3e95a9b409fa21efe056c5ab,
