@@ -34,7 +34,6 @@ public class PauseMenuManager : MenuManager {
     }
 
     private void Update() {
-        print(EventSystem.current.currentSelectedGameObject);
         if (EventSystem.current.currentSelectedGameObject == null && _lastButtonSelected != null) {
             _lastButtonSelected.Select();
         }

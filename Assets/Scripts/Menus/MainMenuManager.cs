@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MainMenuManager : MenuManager {
     [SerializeField] private GameObject[] _menus;
@@ -84,6 +85,21 @@ public class MainMenuManager : MenuManager {
 
     public void LoadSceneAsync(string sceneName) {
         _loadingScreenImage.enabled = true;
+
+        GameCreationParams.itemIndices.Clear();
+
+        for (int i = 0; i < GameCreationParams.itemCount; i++) {
+            int randomIndex = Random.Range(0, _maxItems - i);
+
+            for (int j = 0; j <= randomIndex && j < GameCreationParams.itemIndices.Count; j++) {
+                if (GameCreationParams.itemIndices[j] <= randomIndex) {
+                    randomIndex++;
+                }
+            }
+
+            GameCreationParams.itemIndices.Add(randomIndex);
+            GameCreationParams.itemIndices.Sort();
+        }
 
         SceneManager.LoadSceneAsync(sceneName);
     }
