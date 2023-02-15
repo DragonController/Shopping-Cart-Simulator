@@ -36,7 +36,7 @@ public class GripperController : MonoBehaviour {
 
                         _childArticulationBody = itemArticulationBody;
 
-                        _cartController.SetGrabbingItem(true);
+                        _cartController.SetGrabbedItem(itemArticulationBody.gameObject);
                     }
                 }
             }

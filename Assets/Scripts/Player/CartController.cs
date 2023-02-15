@@ -19,6 +19,7 @@ public class CartController : MonoBehaviour {
 
     private bool _grab = false;
     private bool _grabbingItem = false;
+    private GameObject _grabbedItem;
 
     private float _retractDistance = 0.0f;
     private float _retractSpeedMultiplier;
@@ -107,8 +108,10 @@ public class CartController : MonoBehaviour {
         return _retractDistance;
     }
 
-    public void SetGrabbingItem(bool grabbingItem) {
-        _grabbingItem = grabbingItem;
+    public void SetGrabbedItem(GameObject grabbedItem) {
+        _grabbedItem = grabbedItem;
+        
+        _grabbingItem = true;
     }
 
     public Transform GetItemsParentTransform() {
@@ -124,7 +127,7 @@ public class CartController : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider collider) {
-        if (collider.tag == "Player") {
+        if (collider.tag == "Player" || collider.gameObject == _grabbedItem) {
             return;
         }
 
@@ -136,7 +139,7 @@ public class CartController : MonoBehaviour {
     }
 
     private void OnTriggerStay(Collider collider) {
-        if (collider.tag == "Player") {
+        if (collider.tag == "Player" || collider.gameObject == _grabbedItem) {
             return;
         }
 
