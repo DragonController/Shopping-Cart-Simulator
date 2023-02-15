@@ -133,7 +133,7 @@ public class CartController : MonoBehaviour {
             return;
         }
 
-        if (itemsManager.GetRemainingItemTypeIndices().Contains(itemsManager.GetItems()[collider.gameObject])) {
+        if (itemsManager.GetItems().ContainsKey(collider.gameObject) && itemsManager.GetRemainingItemTypeIndices().Contains(itemsManager.GetItems()[collider.gameObject])) {
             return;
         }
 
@@ -145,7 +145,7 @@ public class CartController : MonoBehaviour {
             return;
         }
 
-        if (itemsManager.GetRemainingItemTypeIndices().Contains(itemsManager.GetItems()[collider.gameObject])) {
+        if (itemsManager.GetItems().ContainsKey(collider.gameObject) && itemsManager.GetRemainingItemTypeIndices().Contains(itemsManager.GetItems()[collider.gameObject])) {
             return;
         }
 
