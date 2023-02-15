@@ -8,12 +8,15 @@ public class ItemsManager : MonoBehaviour {
     [SerializeField] private GameObject _firstListLineGameObject;
 
     private Dictionary<GameObject, int> _items = new Dictionary<GameObject, int>();
+    private List<int> _remainingItemTypeIndices = new List<int>();
     private TMP_Text[] _listLines;
 
     private void Start() {
         foreach (Transform itemTransform in _itemsParentTransform) {
             _items.Add(itemTransform.gameObject, itemTransform.gameObject.GetComponent<ItemController>().GetTypeIndex());
         }
+
+        _remainingItemTypeIndices = GameCreationParams.itemTypeIndices;
 
         Transform parentTransform = _firstListLineGameObject.transform.parent;
         
@@ -28,13 +31,11 @@ public class ItemsManager : MonoBehaviour {
         }
     }
 
-    private void Update() {
-        foreach (int index in GameCreationParams.itemTypeIndices) {
-            // print(index);
-        }
-    }
-
     public Dictionary<GameObject, int> GetItems() {
         return _items;
+    }
+    
+    public List<int> GetRemainingItemTypeIndices() {
+        return _remainingItemTypeIndices;
     }
 }
