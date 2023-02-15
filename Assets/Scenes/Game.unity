@@ -1834,6 +1834,7 @@ GameObject:
   - component: {fileID: 409959958}
   - component: {fileID: 409959957}
   - component: {fileID: 409959961}
+  - component: {fileID: 409959962}
   m_Layer: 0
   m_Name: Item
   m_TagString: Item
@@ -1920,7 +1921,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409959955}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.12400013, y: 1.221, z: -2.100001}
+  m_LocalPosition: {x: 0.12400013, y: 0.706, z: -2.05}
   m_LocalScale: {x: 0.2, y: 0.4, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1993,6 +1994,19 @@ ArticulationBody:
   m_Immovable: 0
   m_UseGravity: 1
   m_CollisionDetectionMode: 2
+--- !u!114 &409959962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409959955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4edf01522874af43966fdae76f9c1ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _typeIndex: 0
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2957,7 +2971,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 551835262}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.125, z: 0.118}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6624,6 +6638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05fdac262f3e1042b126a1fb0b97887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemsManager: {fileID: 1547864037}
   _halfMoveAcceleration: 500
   _lookSpeed: 50
   _grabSpeed: 200
@@ -6636,6 +6651,7 @@ MonoBehaviour:
   _itemTag: Item
   _keyboardControlScheme: Keyboard&Mouse
   _gamepadControlScheme: Gamepad
+  _rejectObjectsForce: 100
 --- !u!64 &1288792779
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7400,6 +7416,7 @@ MonoBehaviour:
   - Roll
   - Golden Egg
   - Turkey
+  _itemsParentTransform: {fileID: 1547864036}
   _firstListLineGameObject: {fileID: 2019874344}
 --- !u!1 &1623146132
 GameObject:

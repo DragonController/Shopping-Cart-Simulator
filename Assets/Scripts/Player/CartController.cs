@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CartController : MonoBehaviour {
+    [SerializeField] private ItemsManager itemsManager;
+
     [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed, _retractSpeed;
     [SerializeField] private float _minHandY;
 
@@ -9,6 +11,8 @@ public class CartController : MonoBehaviour {
     
     [SerializeField] private string _itemTag;
     [SerializeField] private string _keyboardControlScheme, _gamepadControlScheme;
+
+    [SerializeField] private float _rejectObjectsForce;
 
     private PlayerInput _playerInput;
     private InputAction _moveAction, _lookAction, _grabAction, _retractAction;
@@ -117,5 +121,29 @@ public class CartController : MonoBehaviour {
 
     public float GetMinHandY() {
         return _minHandY;
+    }
+
+    private void OnTriggerEnter(Collider collider) {
+        if (collider.tag == "Player") {
+            return;
+        }
+
+        if (itemsManager.GetItems().ContainsKey(collider.gameObject)) {
+            return;
+        }
+
+        collider.attachedArticulationBody.AddForce(new Vector3(0.0f, _rejectObjectsForce, 0.0f));
+    }
+
+    private void OnTriggerStay(Collider collider) {
+        if (collider.tag == "Player") {
+            return;
+        }
+
+        if (itemsManager.GetItems().ContainsKey(collider.gameObject)) {
+            return;
+        }
+
+        collider.attachedArticulationBody.AddForce(new Vector3(0.0f, _rejectObjectsForce, 0.0f));
     }
 }

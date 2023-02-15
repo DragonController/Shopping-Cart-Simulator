@@ -86,19 +86,19 @@ public class MainMenuManager : MenuManager {
     public void LoadSceneAsync(string sceneName) {
         _loadingScreenImage.enabled = true;
 
-        GameCreationParams.itemIndices.Clear();
+        GameCreationParams.itemTypeIndices.Clear();
 
         for (int i = 0; i < GameCreationParams.itemCount; i++) {
             int randomIndex = Random.Range(0, _maxItems - i);
 
-            for (int j = 0; j <= randomIndex && j < GameCreationParams.itemIndices.Count; j++) {
-                if (GameCreationParams.itemIndices[j] <= randomIndex) {
+            for (int j = 0; j <= randomIndex && j < GameCreationParams.itemTypeIndices.Count; j++) {
+                if (GameCreationParams.itemTypeIndices[j] <= randomIndex) {
                     randomIndex++;
                 }
             }
 
-            GameCreationParams.itemIndices.Add(randomIndex);
-            GameCreationParams.itemIndices.Sort();
+            GameCreationParams.itemTypeIndices.Add(randomIndex);
+            GameCreationParams.itemTypeIndices.Sort();
         }
 
         SceneManager.LoadSceneAsync(sceneName);
