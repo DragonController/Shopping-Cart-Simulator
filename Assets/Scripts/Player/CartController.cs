@@ -96,7 +96,10 @@ public class CartController : MonoBehaviour {
             
             GameObject tempItem = _grabbedItem;
             _grabbedItem = null;
-            CheckGameObject(tempItem);
+
+            if (tempItem != null) {
+                CheckGameObject(tempItem);
+            }
         }
     }
 
@@ -157,13 +160,16 @@ public class CartController : MonoBehaviour {
     }
 
     public bool CheckGameObject(GameObject gameObject) {
-        if (gameObject.tag == "Player" || gameObject == _grabbedItem) {
+        if (gameObject.tag == "Player" || gameObject == _grabbedItem || gameObject.layer == LayerMask.NameToLayer(_collectedItemLayer)) {
             return true;
         }
 
         if (_itemsManager.GetItems().ContainsKey(gameObject) && _itemsManager.GetRemainingItemTypeIndices().Contains(_itemsManager.GetItems()[gameObject])) {
             if (_cartTriggers.Contains(gameObject) && !_coverTriggerController.GetCoverTriggers().Contains(gameObject)) {
                 gameObject.layer = LayerMask.NameToLayer(_collectedItemLayer);
+                gameObject.tag = "Untagged";
+
+                _itemsManager.RemoveItem(gameObject);
             }
 
             return true;

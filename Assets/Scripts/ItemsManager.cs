@@ -16,7 +16,9 @@ public class ItemsManager : MonoBehaviour {
             _items.Add(itemTransform.gameObject, itemTransform.gameObject.GetComponent<ItemController>().GetTypeIndex());
         }
 
-        _remainingItemTypeIndices = GameCreationParams.itemTypeIndices;
+        foreach (int itemTypeIndex in GameCreationParams.itemTypeIndices) {
+            _remainingItemTypeIndices.Add(itemTypeIndex);
+        }
 
         Transform parentTransform = _firstListLineGameObject.transform.parent;
         
@@ -37,5 +39,13 @@ public class ItemsManager : MonoBehaviour {
     
     public List<int> GetRemainingItemTypeIndices() {
         return _remainingItemTypeIndices;
+    }
+
+    public void RemoveItem(GameObject item) {
+        int itemIndex = _items[item];
+
+        _listLines[GameCreationParams.itemTypeIndices.IndexOf(itemIndex)].fontStyle = FontStyles.Strikethrough;
+
+        _remainingItemTypeIndices.RemoveAll(i => i == itemIndex);
     }
 }
