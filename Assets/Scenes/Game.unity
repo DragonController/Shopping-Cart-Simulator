@@ -2526,6 +2526,74 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2968027074802716631, guid: cf8a88c7b1d13ff4f88d24ab701d3fbd, type: 3}
+--- !u!1 &497296063
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 497296064}
+  - component: {fileID: 497296066}
+  - component: {fileID: 497296065}
+  m_Layer: 0
+  m_Name: Cover Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &497296064
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497296063}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1077943814}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &497296065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497296063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4a3ede277cce74c81aaf4fe07747cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cartController: {fileID: 1288792778}
+--- !u!64 &497296066
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497296063}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4729988176110476404, guid: cf8a88c7b1d13ff4f88d24ab701d3fbd, type: 3}
 --- !u!1 &513269433
 GameObject:
   m_ObjectHideFlags: 0
@@ -3788,7 +3856,6 @@ GameObject:
   m_Component:
   - component: {fileID: 709342533}
   - component: {fileID: 709342535}
-  - component: {fileID: 709342534}
   m_Layer: 7
   m_Name: Cover
   m_TagString: Untagged
@@ -3811,28 +3878,6 @@ Transform:
   m_Father: {fileID: 1077943814}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &709342534
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 709342532}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4729988176110476404, guid: cf8a88c7b1d13ff4f88d24ab701d3fbd, type: 3}
 --- !u!64 &709342535
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4594,7 +4639,7 @@ GameObject:
   m_Component:
   - component: {fileID: 940665831}
   - component: {fileID: 940665830}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Cart Stabilization
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4972,7 +5017,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1052190266}
   - component: {fileID: 1052190267}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Cart Stabilization (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5071,7 +5116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1077943814}
   m_Layer: 0
-  m_Name: CartSides
+  m_Name: Cart Sides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5094,6 +5139,7 @@ Transform:
   - {fileID: 581408919}
   - {fileID: 476371137}
   - {fileID: 709342533}
+  - {fileID: 497296064}
   m_Father: {fileID: 1288792775}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6120,7 +6166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1264830178}
   - component: {fileID: 1264830179}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Cart Stabilization (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6286,7 +6332,7 @@ GameObject:
   - component: {fileID: 1275754997}
   - component: {fileID: 1275754993}
   - component: {fileID: 1275754998}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Cart Stabilization
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6638,7 +6684,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05fdac262f3e1042b126a1fb0b97887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemsManager: {fileID: 1547864037}
+  _itemsManager: {fileID: 1547864037}
+  _coverTriggerController: {fileID: 497296065}
   _halfMoveAcceleration: 500
   _lookSpeed: 50
   _grabSpeed: 200
@@ -6649,6 +6696,7 @@ MonoBehaviour:
   _maxTargetTransform: {fileID: 1623146133}
   _itemsParentTransform: {fileID: 1547864036}
   _itemTag: Item
+  _collectedItemLayer: Collected Item
   _keyboardControlScheme: Keyboard&Mouse
   _gamepadControlScheme: Gamepad
   _rejectObjectsForce: 100
@@ -7459,7 +7507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1641598165}
   - component: {fileID: 1641598166}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Cart Stabilization (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

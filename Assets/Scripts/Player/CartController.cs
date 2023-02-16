@@ -1,15 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class CartController : MonoBehaviour {
-    [SerializeField] private ItemsManager itemsManager;
+    [SerializeField] private ItemsManager _itemsManager;
+    [SerializeField] private CoverTriggerController _coverTriggerController;
 
     [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed, _retractSpeed;
     [SerializeField] private float _minHandY;
 
     [SerializeField] private Transform _minTargetTransform, _targetTransform, _maxTargetTransform, _itemsParentTransform;
     
-    [SerializeField] private string _itemTag;
+    [SerializeField] private string _itemTag, _collectedItemLayer;
     [SerializeField] private string _keyboardControlScheme, _gamepadControlScheme;
 
     [SerializeField] private float _rejectObjectsForce;
@@ -25,6 +27,8 @@ public class CartController : MonoBehaviour {
     private float _retractSpeedMultiplier;
 
     private ArticulationBody _articulationBody;
+
+    private List<GameObject> _cartTriggers = new List<GameObject>();
     
     private void Start() {
         _playerInput = GetComponent<PlayerInput>();
@@ -88,9 +92,11 @@ public class CartController : MonoBehaviour {
         _grab = grab;
 
         if (!grab) {
-            _grabbedItem = null;
-
             _grabbingItem = false;
+            
+            GameObject tempItem = _grabbedItem;
+            _grabbedItem = null;
+            CheckGameObject(tempItem);
         }
     }
 
@@ -129,11 +135,9 @@ public class CartController : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider collider) {
-        if (collider.tag == "Player" || collider.gameObject == _grabbedItem) {
-            return;
-        }
+        _cartTriggers.Add(collider.gameObject);
 
-        if (itemsManager.GetItems().ContainsKey(collider.gameObject) && itemsManager.GetRemainingItemTypeIndices().Contains(itemsManager.GetItems()[collider.gameObject])) {
+        if (CheckGameObject(collider.gameObject)) {
             return;
         }
 
@@ -141,14 +145,30 @@ public class CartController : MonoBehaviour {
     }
 
     private void OnTriggerStay(Collider collider) {
-        if (collider.tag == "Player" || collider.gameObject == _grabbedItem) {
-            return;
-        }
-
-        if (itemsManager.GetItems().ContainsKey(collider.gameObject) && itemsManager.GetRemainingItemTypeIndices().Contains(itemsManager.GetItems()[collider.gameObject])) {
+        if (CheckGameObject(collider.gameObject)) {
             return;
         }
 
         collider.attachedArticulationBody.AddForce(new Vector3(0.0f, _rejectObjectsForce, 0.0f));
+    }
+
+    private void OnTriggerExit(Collider collider) {
+        _cartTriggers.RemoveAll(c => c == collider.gameObject);
+    }
+
+    public bool CheckGameObject(GameObject gameObject) {
+        if (gameObject.tag == "Player" || gameObject == _grabbedItem) {
+            return true;
+        }
+
+        if (_itemsManager.GetItems().ContainsKey(gameObject) && _itemsManager.GetRemainingItemTypeIndices().Contains(_itemsManager.GetItems()[gameObject])) {
+            if (_cartTriggers.Contains(gameObject) && !_coverTriggerController.GetCoverTriggers().Contains(gameObject)) {
+                gameObject.layer = LayerMask.NameToLayer(_collectedItemLayer);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
