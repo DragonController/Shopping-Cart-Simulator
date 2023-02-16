@@ -10,7 +10,7 @@ public class CartController : MonoBehaviour {
     [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed, _retractSpeed;
     [SerializeField] private float _minHandY;
 
-    [SerializeField] private Transform _minTargetTransform, _targetTransform, _maxTargetTransform, _itemsParentTransform;
+    [SerializeField] private Transform _backLeftWheelTransform, _backRightWheelTransform, _minTargetTransform, _targetTransform, _maxTargetTransform, _itemsParentTransform;
     
     [SerializeField] private string _itemTag, _collectedItemLayer;
     [SerializeField] private string _keyboardControlScheme, _gamepadControlScheme;
@@ -46,8 +46,8 @@ public class CartController : MonoBehaviour {
     private void FixedUpdate() {
         Vector2 move = _moveAction.ReadValue<Vector2>() * Time.fixedDeltaTime;
 
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (move.x + move.y) * _halfMoveAcceleration * _articulationBody.mass), transform.TransformPoint(-0.2794f, 0.0f, -0.5207f));
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (-move.x + move.y) * _halfMoveAcceleration * _articulationBody.mass), transform.TransformPoint(0.2794f, 0.0f, -0.5207f));
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (move.x + move.y) * _halfMoveAcceleration * _articulationBody.mass), _backLeftWheelTransform.position);
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (-move.x + move.y) * _halfMoveAcceleration * _articulationBody.mass), _backRightWheelTransform.position);
 
         // print(move.x + move.y);
         // print(-move.x + move.y);

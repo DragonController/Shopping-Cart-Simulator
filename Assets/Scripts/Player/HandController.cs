@@ -88,10 +88,10 @@ public class HandController : MonoBehaviour {
             }
         }
 
-        _driveTargets[6] += (180.0f - ((360.0f - ((newShoulderAngles.x - _driveTargets[6] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
-        _driveTargets[8] += (180.0f - ((360.0f - ((newShoulderAngles.y - _driveTargets[8] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
-        _driveTargets[10] = (180.0f - ((360.0f - ((newElbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
-        _driveTargets[11] = (180.0f - ((360.0f - ((newWristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[8] += (180.0f - ((360.0f - ((newShoulderAngles.x - _driveTargets[8] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[12] += (180.0f - ((360.0f - ((newShoulderAngles.y - _driveTargets[12] * Mathf.Rad2Deg + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[14] = (180.0f - ((360.0f - ((newElbowAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
+        _driveTargets[15] = (180.0f - ((360.0f - ((newWristAngle + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad;
         
         _wristArticulationBody.SetDriveTargets(_driveTargets);
         
@@ -99,13 +99,13 @@ public class HandController : MonoBehaviour {
 
         // _driveTargetVelocities[6] = (180.0f - ((360.0f - ((upperArmAngles.x - _shoulderSwivelTransform.localEulerAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad / Time.fixedDeltaTime;
 
-        _driveTargetVelocities[7] = _look.x;
-        _driveTargetVelocities[9] = -_look.y;
+        _driveTargetVelocities[9] = _look.x;
+        _driveTargetVelocities[13] = -_look.y;
 
         _look = Vector2.zero;
 
-        _driveTargetVelocities[12] = grab;
-        _driveTargetVelocities[13] = grab;
+        _driveTargetVelocities[16] = grab;
+        _driveTargetVelocities[17] = grab;
 
         _wristArticulationBody.SetDriveTargetVelocities(_driveTargetVelocities);
     }
