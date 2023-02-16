@@ -57,7 +57,7 @@ public class GripperController : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag == _cartController.GetItemTag()) {
+        if (collision.gameObject.tag == _cartController.GetItemTag() && !_collidingItemArticulationBodies.Contains(collision.articulationBody)) {
             _collidingItemArticulationBodies.Add(collision.articulationBody);
         }
     }
@@ -67,7 +67,7 @@ public class GripperController : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider collider) {
-        if (collider.tag == _cartController.GetItemTag()) {
+        if (collider.tag == _cartController.GetItemTag() && !_triggeringItemArticulationBodies.Contains(collider.attachedArticulationBody)) {
             _triggeringItemArticulationBodies.Add(collider.attachedArticulationBody);
         }
     }

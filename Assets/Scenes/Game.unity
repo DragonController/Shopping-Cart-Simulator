@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 185005817}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Min Target
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 187359923}
   - component: {fileID: 187359927}
   - component: {fileID: 187359928}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Left Gripper
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1255,7 +1255,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -2246,7 +2246,7 @@ GameObject:
   - component: {fileID: 475303576}
   - component: {fileID: 475303575}
   - component: {fileID: 475303579}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Wrist
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2571,7 +2571,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e4a3ede277cce74c81aaf4fe07747cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cartController: {fileID: 1288792778}
 --- !u!64 &497296066
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2604,7 +2603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 513269434}
   - component: {fileID: 513269435}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Upper Arm Swivel
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3024,7 +3023,7 @@ GameObject:
   - component: {fileID: 551835266}
   - component: {fileID: 551835268}
   - component: {fileID: 551835264}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Upper Arm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3368,7 +3367,7 @@ GameObject:
   m_Component:
   - component: {fileID: 654977092}
   - component: {fileID: 654977093}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Camera Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5138,6 +5137,7 @@ Transform:
   - {fileID: 1013238445}
   - {fileID: 581408919}
   - {fileID: 476371137}
+  - {fileID: 1259848362}
   - {fileID: 709342533}
   - {fileID: 497296064}
   m_Father: {fileID: 1288792775}
@@ -5948,6 +5948,73 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212470383}
   m_CullTransparentMesh: 1
+--- !u!1 &1259848361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1259848362}
+  - component: {fileID: 1259848364}
+  - component: {fileID: 1259848365}
+  m_Layer: 0
+  m_Name: Cart Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1259848362
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259848361}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1077943814}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &1259848364
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259848361}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8653722315008560443, guid: cf8a88c7b1d13ff4f88d24ab701d3fbd, type: 3}
+--- !u!114 &1259848365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259848361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb349b5e81c08534195f66175f7c59bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1261627707
 GameObject:
   m_ObjectHideFlags: 0
@@ -5963,7 +6030,7 @@ GameObject:
   - component: {fileID: 1261627709}
   - component: {fileID: 1261627713}
   - component: {fileID: 1261627714}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Right Gripper
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6495,7 +6562,6 @@ GameObject:
   - component: {fileID: 1288792774}
   - component: {fileID: 1288792773}
   - component: {fileID: 1288792779}
-  - component: {fileID: 1288792780}
   - component: {fileID: 1288792776}
   - component: {fileID: 1288792777}
   - component: {fileID: 1288792778}
@@ -6685,6 +6751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemsManager: {fileID: 1547864037}
+  _cartTriggerController: {fileID: 1259848365}
   _coverTriggerController: {fileID: 497296065}
   _halfMoveAcceleration: 500
   _lookSpeed: 50
@@ -6722,28 +6789,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1140958892023918970, guid: cf8a88c7b1d13ff4f88d24ab701d3fbd, type: 3}
---- !u!64 &1288792780
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288792771}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -8653722315008560443, guid: cf8a88c7b1d13ff4f88d24ab701d3fbd, type: 3}
 --- !u!1 &1317742714
 GameObject:
   m_ObjectHideFlags: 0
@@ -6757,7 +6802,7 @@ GameObject:
   - component: {fileID: 1317742718}
   - component: {fileID: 1317742717}
   - component: {fileID: 1317742716}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Lower Arm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -7475,7 +7520,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1623146133}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Max Target
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -9395,7 +9440,7 @@ GameObject:
   - component: {fileID: 2045784119}
   - component: {fileID: 2045784121}
   - component: {fileID: 2045784120}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Target
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -9583,7 +9628,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2101816954}
   - component: {fileID: 2101816955}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Camera Base Swivel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

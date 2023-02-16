@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class CartController : MonoBehaviour {
     [SerializeField] private ItemsManager _itemsManager;
+    [SerializeField] private CartTriggerController _cartTriggerController;
     [SerializeField] private CoverTriggerController _coverTriggerController;
 
     [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed, _retractSpeed;
@@ -27,8 +28,6 @@ public class CartController : MonoBehaviour {
     private float _retractSpeedMultiplier;
 
     private ArticulationBody _articulationBody;
-
-    private List<GameObject> _cartTriggers = new List<GameObject>();
     
     private void Start() {
         _playerInput = GetComponent<PlayerInput>();
@@ -56,6 +55,35 @@ public class CartController : MonoBehaviour {
         // Vector2 look = _moveAction.ReadValue<Vector2>();
 
         // _articulationBody.AddRelativeForce(Vector3.forward * move.y * moveForce * Time.fixedDeltaTime);
+
+        List<Collider> cartTriggerColliders = _cartTriggerController.GetCartTriggerColliders();
+
+        for (int i = 0; i < cartTriggerColliders.Count; i++) {
+            Collider collider = cartTriggerColliders[i];
+
+            for (int j = 0; j < i; j++) {
+                if (collider == cartTriggerColliders[j].gameObject) {
+                    continue;
+                }
+            }
+
+            if (collider.tag == "Player" || collider.gameObject == _grabbedItem || collider.gameObject.layer == LayerMask.NameToLayer(_collectedItemLayer)) {
+                continue;
+            }
+
+            if (_itemsManager.GetItems().ContainsKey(collider.gameObject) && _itemsManager.GetRemainingItemTypeIndices().Contains(_itemsManager.GetItems()[collider.gameObject])) {
+                if (!_coverTriggerController.GetCoverTriggers().Contains(collider.gameObject)) {
+                    collider.gameObject.layer = LayerMask.NameToLayer(_collectedItemLayer);
+                    collider.tag = "Untagged";
+
+                    _itemsManager.RemoveItem(collider.gameObject);
+                }
+
+                continue;
+            }
+            
+            collider.attachedArticulationBody.AddForce(new Vector3(0.0f, _rejectObjectsForce, 0.0f));
+        }
     }
 
     private void Update() {
@@ -94,12 +122,7 @@ public class CartController : MonoBehaviour {
         if (!grab) {
             _grabbingItem = false;
             
-            GameObject tempItem = _grabbedItem;
             _grabbedItem = null;
-
-            if (tempItem != null) {
-                CheckGameObject(tempItem);
-            }
         }
     }
 
@@ -135,46 +158,5 @@ public class CartController : MonoBehaviour {
 
     public float GetMinHandY() {
         return _minHandY;
-    }
-
-    private void OnTriggerEnter(Collider collider) {
-        _cartTriggers.Add(collider.gameObject);
-
-        if (CheckGameObject(collider.gameObject)) {
-            return;
-        }
-
-        collider.attachedArticulationBody.AddForce(new Vector3(0.0f, _rejectObjectsForce, 0.0f));
-    }
-
-    private void OnTriggerStay(Collider collider) {
-        if (CheckGameObject(collider.gameObject)) {
-            return;
-        }
-
-        collider.attachedArticulationBody.AddForce(new Vector3(0.0f, _rejectObjectsForce, 0.0f));
-    }
-
-    private void OnTriggerExit(Collider collider) {
-        _cartTriggers.RemoveAll(c => c == collider.gameObject);
-    }
-
-    public bool CheckGameObject(GameObject gameObject) {
-        if (gameObject.tag == "Player" || gameObject == _grabbedItem || gameObject.layer == LayerMask.NameToLayer(_collectedItemLayer)) {
-            return true;
-        }
-
-        if (_itemsManager.GetItems().ContainsKey(gameObject) && _itemsManager.GetRemainingItemTypeIndices().Contains(_itemsManager.GetItems()[gameObject])) {
-            if (_cartTriggers.Contains(gameObject) && !_coverTriggerController.GetCoverTriggers().Contains(gameObject)) {
-                gameObject.layer = LayerMask.NameToLayer(_collectedItemLayer);
-                gameObject.tag = "Untagged";
-
-                _itemsManager.RemoveItem(gameObject);
-            }
-
-            return true;
-        }
-
-        return false;
     }
 }
