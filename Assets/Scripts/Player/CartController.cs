@@ -82,7 +82,9 @@ public class CartController : MonoBehaviour {
                 continue;
             }
             
-            collider.attachedArticulationBody.AddForce(new Vector3(0.0f, _rejectObjectsForce, 0.0f));
+            if (collider.attachedArticulationBody != null) {
+                collider.attachedArticulationBody.AddForce(new Vector3(0.0f, _rejectObjectsForce, 0.0f));
+            }
         }
     }
 

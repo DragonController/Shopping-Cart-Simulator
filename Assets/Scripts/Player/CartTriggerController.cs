@@ -11,7 +11,6 @@ public class CartTriggerController : MonoBehaviour {
     }
 
     private void OnTriggerExit(Collider collider) {
-        print(collider);
         _cartTriggerColliders.RemoveAll(c => c == collider);
     }
 
