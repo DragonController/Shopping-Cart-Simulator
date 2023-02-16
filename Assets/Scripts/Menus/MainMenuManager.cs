@@ -14,6 +14,7 @@ public class MainMenuManager : MenuManager {
     [SerializeField] private Button _defaultExitMenuButton;
     [SerializeField] private TMP_Text _itemCountText, _totalText;
     [SerializeField] private int _maxItems;
+    [SerializeField] private float _expressCost;
 
     [SerializeField] private Image _loadingScreenImage;
 
@@ -77,10 +78,18 @@ public class MainMenuManager : MenuManager {
 
     public void SetIsStandardMode(bool isStandardMode) {
         GameCreationParams.isStandardMode = isStandardMode;
+
+        UpdateTotal();
     }
 
     private void UpdateTotal() {
-        _totalText.SetText("Total: $" + (GameCreationParams.itemCount - 1) + ".99");
+        if (GameCreationParams.isStandardMode) {
+            _totalText.SetText((GameCreationParams.itemCount - 0.01f).ToString("Total: $0.00"));
+
+            return;
+        }
+
+        _totalText.SetText((GameCreationParams.itemCount + _expressCost - 0.01f).ToString("Total: $0.00"));
     }
 
     public void LoadSceneAsync(string sceneName) {
