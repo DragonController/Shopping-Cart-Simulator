@@ -7,7 +7,7 @@ public class CartController : MonoBehaviour {
     [SerializeField] private CartTriggerController _cartTriggerController;
     [SerializeField] private CoverTriggerController _coverTriggerController;
 
-    [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed, _retractSpeed;
+    [SerializeField] private float _halfMoveForce, _lookSpeed, _grabSpeed, _retractSpeed;
     [SerializeField] private float _minHandY;
 
     [SerializeField] private Transform _backLeftWheelTransform, _backRightWheelTransform, _minTargetTransform, _targetTransform, _maxTargetTransform, _itemsParentTransform;
@@ -44,17 +44,17 @@ public class CartController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        Vector2 move = _moveAction.ReadValue<Vector2>() * Time.fixedDeltaTime;
+        Vector2 move = _moveAction.ReadValue<Vector2>();
 
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (move.x + move.y) * _halfMoveAcceleration * _articulationBody.mass), _backLeftWheelTransform.position);
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, (-move.x + move.y) * _halfMoveAcceleration * _articulationBody.mass), _backRightWheelTransform.position);
+        if (move.x != 0.0f && move.y != 0.0f) {
+            // move = move / Mathf.Max(Mathf.Abs(move.x), Mathf.Abs(move.y));
+        }
 
-        // print(move.x + move.y);
-        // print(-move.x + move.y);
-        
-        // Vector2 look = _moveAction.ReadValue<Vector2>();
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y + move.x, -1.0f, 1.0f) * _halfMoveForce * _articulationBody.mass * Time.fixedDeltaTime), _backLeftWheelTransform.position);
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y - move.x, -1.0f, 1.0f) * _halfMoveForce * _articulationBody.mass * Time.fixedDeltaTime), _backRightWheelTransform.position);
 
-        // _articulationBody.AddRelativeForce(Vector3.forward * move.y * moveForce * Time.fixedDeltaTime);
+        print(Mathf.Clamp(move.y + move.x, -1.0f, 1.0f));
+        print(Mathf.Clamp(move.y - move.x, -1.0f, 1.0f));
 
         List<Collider> cartTriggerColliders = _cartTriggerController.GetCartTriggerColliders();
 
