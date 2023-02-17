@@ -10,7 +10,7 @@ public class MainMenuManager : MenuManager {
     [SerializeField] private GameObject[] _menus;
     [SerializeField] private GameObject _exitMenu;
     [SerializeField] private Button[] _mainButtons;
-    [SerializeField] private Button _subtractButton, _addButton;
+    [SerializeField] private Button _subtractButton, _addButton, _standardButton, _expressButton, _promoCodeButton;
     [SerializeField] private Button _defaultExitMenuButton;
     [SerializeField] private TMP_Text _itemCountText, _totalText;
     [SerializeField] private int _maxItems;
@@ -153,5 +153,13 @@ public class MainMenuManager : MenuManager {
 
     public override void SetLastSelectedButton(Button button) {
         _lastButtonSelected = button;
+
+        if (button == _standardButton || button == _expressButton) {
+            Navigation navigation = _promoCodeButton.navigation;
+
+            navigation.selectOnUp = button;
+
+            _promoCodeButton.navigation = navigation;
+        }
     }
 }

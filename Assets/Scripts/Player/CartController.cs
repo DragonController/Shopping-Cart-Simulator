@@ -50,6 +50,8 @@ public class CartController : MonoBehaviour {
             // move = move / Mathf.Max(Mathf.Abs(move.x), Mathf.Abs(move.y));
         }
 
+        move = move.normalized * Mathf.Min(1.0f, move.magnitude);
+
         _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y + move.x, -1.0f, 1.0f) * _halfMoveForce * _articulationBody.mass * Time.fixedDeltaTime), _backLeftWheelTransform.position);
         _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y - move.x, -1.0f, 1.0f) * _halfMoveForce * _articulationBody.mass * Time.fixedDeltaTime), _backRightWheelTransform.position);
 
