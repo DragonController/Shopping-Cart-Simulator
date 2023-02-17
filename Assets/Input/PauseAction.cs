@@ -35,6 +35,24 @@ public partial class @PauseAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigateMenuRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""77da6d58-75ca-4032-a146-fe125515df34"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigateMenuLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""2235f77f-f948-455e-8747-fba744529faa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -68,6 +86,50 @@ public partial class @PauseAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e38cc0fd-47a9-400a-b6ec-24dde8d555ef"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""NavigateMenuLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f158dcfe-d12c-47c8-a03b-645f7b859554"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""NavigateMenuLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""15fed8a2-2159-4b40-abeb-d0d016b44664"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""NavigateMenuRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5296cf71-7720-4aca-81bc-e1ead8a59a7f"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""NavigateMenuRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -129,6 +191,8 @@ public partial class @PauseAction: IInputActionCollection2, IDisposable
         // Pause
         m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
         m_Pause_Pause = m_Pause.FindAction("Pause", throwIfNotFound: true);
+        m_Pause_NavigateMenuRight = m_Pause.FindAction("NavigateMenuRight", throwIfNotFound: true);
+        m_Pause_NavigateMenuLeft = m_Pause.FindAction("NavigateMenuLeft", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -191,11 +255,15 @@ public partial class @PauseAction: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Pause;
     private List<IPauseActions> m_PauseActionsCallbackInterfaces = new List<IPauseActions>();
     private readonly InputAction m_Pause_Pause;
+    private readonly InputAction m_Pause_NavigateMenuRight;
+    private readonly InputAction m_Pause_NavigateMenuLeft;
     public struct PauseActions
     {
         private @PauseAction m_Wrapper;
         public PauseActions(@PauseAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Pause => m_Wrapper.m_Pause_Pause;
+        public InputAction @NavigateMenuRight => m_Wrapper.m_Pause_NavigateMenuRight;
+        public InputAction @NavigateMenuLeft => m_Wrapper.m_Pause_NavigateMenuLeft;
         public InputActionMap Get() { return m_Wrapper.m_Pause; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -208,6 +276,12 @@ public partial class @PauseAction: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @NavigateMenuRight.started += instance.OnNavigateMenuRight;
+            @NavigateMenuRight.performed += instance.OnNavigateMenuRight;
+            @NavigateMenuRight.canceled += instance.OnNavigateMenuRight;
+            @NavigateMenuLeft.started += instance.OnNavigateMenuLeft;
+            @NavigateMenuLeft.performed += instance.OnNavigateMenuLeft;
+            @NavigateMenuLeft.canceled += instance.OnNavigateMenuLeft;
         }
 
         private void UnregisterCallbacks(IPauseActions instance)
@@ -215,6 +289,12 @@ public partial class @PauseAction: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @NavigateMenuRight.started -= instance.OnNavigateMenuRight;
+            @NavigateMenuRight.performed -= instance.OnNavigateMenuRight;
+            @NavigateMenuRight.canceled -= instance.OnNavigateMenuRight;
+            @NavigateMenuLeft.started -= instance.OnNavigateMenuLeft;
+            @NavigateMenuLeft.performed -= instance.OnNavigateMenuLeft;
+            @NavigateMenuLeft.canceled -= instance.OnNavigateMenuLeft;
         }
 
         public void RemoveCallbacks(IPauseActions instance)
@@ -271,5 +351,7 @@ public partial class @PauseAction: IInputActionCollection2, IDisposable
     public interface IPauseActions
     {
         void OnPause(InputAction.CallbackContext context);
+        void OnNavigateMenuRight(InputAction.CallbackContext context);
+        void OnNavigateMenuLeft(InputAction.CallbackContext context);
     }
 }

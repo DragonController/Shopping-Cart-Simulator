@@ -30,6 +30,8 @@ public class MainMenuManager : MenuManager {
 
     private void Start() {
         _pauseAction.Pause.Pause.performed += _ => CloseExitMenu();
+        _pauseAction.Pause.NavigateMenuLeft.performed += _ => SetActiveMenu(Mathf.Max(0, _activeMenuIndex - 1));
+        _pauseAction.Pause.NavigateMenuRight.performed += _ => SetActiveMenu(Mathf.Min(_menus.Length - 1, _activeMenuIndex + 1));
 
         for (int i = 0; i < _menus.Length; i++) {
             if (_menus[i].activeSelf) {
