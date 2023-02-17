@@ -2,8 +2,6 @@ using UnityEngine;
 using TMPro;
 
 public class FPSCounter : MonoBehaviour {
- 
-    public float timer, refresh, avgFramerate;
     private TMP_Text _text;
  
     private void Start() {
@@ -11,10 +9,6 @@ public class FPSCounter : MonoBehaviour {
     }
  
     private void Update() {
-        float timelapse = Time.smoothDeltaTime;
-        timer = timer <= 0 ? refresh : timer -= timelapse;
- 
-        if(timer <= 0) avgFramerate = (int) (1f / timelapse);
-        _text.text = avgFramerate + " FPS";
+        _text.text = Mathf.Round(1.0f / Time.unscaledDeltaTime) + " FPS";
     }
 }
