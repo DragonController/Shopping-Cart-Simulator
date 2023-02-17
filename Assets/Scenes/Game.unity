@@ -4434,7 +4434,8 @@ MonoBehaviour:
   m_text: New Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cb89dfd8615277a468320f964d611e15, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 676735219517991982, guid: cb89dfd8615277a468320f964d611e15,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7601,6 +7602,8 @@ MonoBehaviour:
   _targetTransform: {fileID: 2045784119}
   _maxTargetTransform: {fileID: 1623146133}
   _itemsParentTransform: {fileID: 1547864036}
+  _cameraBaseSwivelArticulationBody: {fileID: 2101816955}
+  _cameraBaseArticulationBody: {fileID: 654977093}
   _itemTag: Item
   _collectedItemLayer: Collected Item
   _keyboardControlScheme: Keyboard&Mouse

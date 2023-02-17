@@ -11,6 +11,7 @@ public class CartController : MonoBehaviour {
     [SerializeField] private float _minHandY;
 
     [SerializeField] private Transform _backLeftWheelTransform, _backRightWheelTransform, _minTargetTransform, _targetTransform, _maxTargetTransform, _itemsParentTransform;
+    [SerializeField] private ArticulationBody _cameraBaseSwivelArticulationBody, _cameraBaseArticulationBody;
     
     [SerializeField] private string _itemTag, _collectedItemLayer;
     [SerializeField] private string _keyboardControlScheme, _gamepadControlScheme;
@@ -54,9 +55,6 @@ public class CartController : MonoBehaviour {
 
         _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y + move.x, -1.0f, 1.0f) * _halfMoveForce * _articulationBody.mass * Time.fixedDeltaTime), _backLeftWheelTransform.position);
         _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y - move.x, -1.0f, 1.0f) * _halfMoveForce * _articulationBody.mass * Time.fixedDeltaTime), _backRightWheelTransform.position);
-
-        print(Mathf.Clamp(move.y + move.x, -1.0f, 1.0f));
-        print(Mathf.Clamp(move.y - move.x, -1.0f, 1.0f));
 
         List<Collider> cartTriggerColliders = _cartTriggerController.GetCartTriggerColliders();
 
@@ -162,5 +160,13 @@ public class CartController : MonoBehaviour {
 
     public float GetMinHandY() {
         return _minHandY;
+    }
+
+    public ArticulationBody GetCameraBaseSwivelArticulationBody() {
+        return _cameraBaseSwivelArticulationBody;
+    }
+
+    public ArticulationBody GetCameraBaseArticulationBody() {
+        return _cameraBaseArticulationBody;
     }
 }

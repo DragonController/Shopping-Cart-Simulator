@@ -4708,6 +4708,9 @@ MonoBehaviour:
   - {fileID: 2029692537}
   _subtractButton: {fileID: 1037424406}
   _addButton: {fileID: 1759954926}
+  _standardButton: {fileID: 135052750}
+  _expressButton: {fileID: 1058890739}
+  _promoCodeButton: {fileID: 870697677}
   _defaultExitMenuButton: {fileID: 1842253883}
   _itemCountText: {fileID: 99218915}
   _totalText: {fileID: 47328687}
