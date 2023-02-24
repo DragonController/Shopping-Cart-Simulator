@@ -44,6 +44,8 @@ public class MainMenuManager : MenuManager {
 
     private void OnEnable() {
         _pauseAction.Enable();
+
+        ChangeItemCount(0);
     }
  
     private void OnDisable() {
