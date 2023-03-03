@@ -675,7 +675,7 @@
                     "path": "*/{Cancel}",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick",
+                    "groups": "Gamepad;Touch;Joystick",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -109,8 +109,6 @@ public class HandController : MonoBehaviour {
         
         float grab = _cartController.GetGrabVelocity() * Mathf.Deg2Rad;
 
-        // _driveTargetVelocities[_shoulderSwivelIndex] = (180.0f - ((360.0f - ((upperArmAngles.x - _shoulderSwivelTransform.localEulerAngles.y + 180.0f) % 360.0f)) % 360.0f)) * Mathf.Deg2Rad / Time.fixedDeltaTime;
-
         _driveTargetVelocities[_lookSwivelIndex] = _look.x;
         _driveTargetVelocities[_lookIndex] = -_look.y;
 

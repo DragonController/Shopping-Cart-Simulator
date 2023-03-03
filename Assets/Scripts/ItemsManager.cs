@@ -9,7 +9,7 @@ public class ItemsManager : MonoBehaviour {
     [SerializeField] private GameObject _firstListLineGameObject, _winnerScreen;
     [SerializeField] private PauseMenuManager _pauseMenuManager;
     [SerializeField] private Button _defaultButton;
-    [SerializeField] private TMP_Text _winnerText, _minutesAndSeconds;
+    [SerializeField] private TMP_Text _winnerText, _minutesAndSeconds, _centiseconds;
 
     private Dictionary<GameObject, int> _items = new Dictionary<GameObject, int>();
     private List<int> _remainingItemTypeIndices = new List<int>();
@@ -60,7 +60,7 @@ public class ItemsManager : MonoBehaviour {
             _defaultButton.Select();
             _pauseMenuManager.SetLastSelectedButton(_defaultButton);
 
-            _winnerText.text = "Congradulations!\nYou completed your shopping list with " + _minutesAndSeconds.text + " to spare";
+            _winnerText.text = "Congradulations!\nYou completed your shopping list with " + _minutesAndSeconds.text + "." + _centiseconds.text + " to spare";
         }
     }
 }

@@ -4706,6 +4706,7 @@ MonoBehaviour:
   - {fileID: 1917174307}
   - {fileID: 1187366320}
   - {fileID: 2029692537}
+  _defaultButton: {fileID: 1759954926}
   _subtractButton: {fileID: 1037424406}
   _addButton: {fileID: 1759954926}
   _standardButton: {fileID: 135052750}

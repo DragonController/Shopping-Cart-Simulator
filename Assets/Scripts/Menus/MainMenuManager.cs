@@ -10,7 +10,7 @@ public class MainMenuManager : MenuManager {
     [SerializeField] private GameObject[] _menus;
     [SerializeField] private GameObject _exitMenu;
     [SerializeField] private Button[] _mainButtons;
-    [SerializeField] private Button _subtractButton, _addButton, _standardButton, _expressButton, _promoCodeButton;
+    [SerializeField] private Button _defaultButton, _subtractButton, _addButton, _standardButton, _expressButton, _promoCodeButton;
     [SerializeField] private Button _defaultExitMenuButton;
     [SerializeField] private TMP_Text _itemCountText, _totalText;
     [SerializeField] private int _maxItems;
@@ -24,14 +24,18 @@ public class MainMenuManager : MenuManager {
 
     private int _activeMenuIndex;
 
+    private bool _exitMenuOpen = false;
+
     private void Awake() {
         _pauseAction = new PauseAction();
     }
 
     private void Start() {
-        _pauseAction.Pause.Pause.performed += _ => CloseExitMenu();
+        _pauseAction.Pause.Pause.performed += _ => ToggleExitMenu();
         _pauseAction.Pause.NavigateMenuLeft.performed += _ => SetActiveMenu(Mathf.Max(0, _activeMenuIndex - 1));
         _pauseAction.Pause.NavigateMenuRight.performed += _ => SetActiveMenu(Mathf.Min(_menus.Length - 1, _activeMenuIndex + 1));
+
+        _lastButtonSelected = _defaultButton;
 
         for (int i = 0; i < _menus.Length; i++) {
             if (_menus[i].activeSelf) {
@@ -131,7 +135,17 @@ public class MainMenuManager : MenuManager {
         }
     }
 
+    public void ToggleExitMenu() {
+        if (_exitMenuOpen) {
+            CloseExitMenu();
+        } else {
+            OpenExitMenu();
+        }
+    }
+
     public void OpenExitMenu() {
+        _exitMenuOpen = true;
+
         ChangMainButtonsInteractable(false);
 
         _lastMainButtonSelected = _lastButtonSelected;
@@ -143,6 +157,8 @@ public class MainMenuManager : MenuManager {
     }
 
     public void CloseExitMenu() {
+        _exitMenuOpen = false;
+
         ChangMainButtonsInteractable(true);
 
         _exitMenu.SetActive(false);
