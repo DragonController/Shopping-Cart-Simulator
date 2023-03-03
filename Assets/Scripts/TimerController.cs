@@ -1,8 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class TimerController : MonoBehaviour {
     [SerializeField] private TMP_Text _minutesAndSeconds, _centiseconds;
+    [SerializeField] private GameObject _timedOutScreen;
+    [SerializeField] private PauseMenuManager _pauseMenuManager;
+    [SerializeField] private Button _defaultButton;
 
     private float _timer;
 
@@ -26,5 +30,14 @@ public class TimerController : MonoBehaviour {
         }
 
         _centiseconds.text = Mathf.Floor((_timer % 1.0f) * 100.0f).ToString("00");
+
+        if (_timer <= 0.0f) {
+            Time.timeScale = 0.0f;
+            _timedOutScreen.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+
+            _defaultButton.Select();
+            _pauseMenuManager.SetLastSelectedButton(_defaultButton);
+        }
     }
 }

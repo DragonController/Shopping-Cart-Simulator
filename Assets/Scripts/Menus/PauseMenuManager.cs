@@ -28,7 +28,7 @@ public class PauseMenuManager : MenuManager {
     private void OnEnable() {
         _pauseAction.Enable();
     }
- 
+
     private void OnDisable() {
         _pauseAction.Disable(); 
     }
@@ -38,7 +38,7 @@ public class PauseMenuManager : MenuManager {
             _lastButtonSelected.Select();
         }
     }
-    
+
     private void TogglePause() {
         switch (_paused) {
             case 0:

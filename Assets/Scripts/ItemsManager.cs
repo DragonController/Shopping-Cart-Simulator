@@ -1,11 +1,15 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
 public class ItemsManager : MonoBehaviour {
     [SerializeField] private string[] _itemNames;
     [SerializeField] private Transform _itemsParentTransform;
-    [SerializeField] private GameObject _firstListLineGameObject;
+    [SerializeField] private GameObject _firstListLineGameObject, _winnerScreen;
+    [SerializeField] private PauseMenuManager _pauseMenuManager;
+    [SerializeField] private Button _defaultButton;
+    [SerializeField] private TMP_Text _winnerText, _minutesAndSeconds;
 
     private Dictionary<GameObject, int> _items = new Dictionary<GameObject, int>();
     private List<int> _remainingItemTypeIndices = new List<int>();
@@ -47,5 +51,16 @@ public class ItemsManager : MonoBehaviour {
         _listLines[GameCreationParams.itemTypeIndices.IndexOf(itemIndex)].fontStyle = FontStyles.Strikethrough;
 
         _remainingItemTypeIndices.RemoveAll(i => i == itemIndex);
+
+        if (_remainingItemTypeIndices.Count == 0) {
+            Time.timeScale = 0.0f;
+            _winnerScreen.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+
+            _defaultButton.Select();
+            _pauseMenuManager.SetLastSelectedButton(_defaultButton);
+
+            _winnerText.text = "Congradulations!\nYou completed your shopping list with " + _minutesAndSeconds.text + " to spare";
+        }
     }
 }
