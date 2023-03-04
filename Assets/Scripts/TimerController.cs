@@ -10,6 +10,8 @@ public class TimerController : MonoBehaviour {
 
     private float _timer;
 
+    private bool _timedOut = false;
+
     private void Start() {
         if (GameCreationParams.isStandardMode) {
             _timer = 120.0f;
@@ -31,7 +33,9 @@ public class TimerController : MonoBehaviour {
 
         _centiseconds.text = Mathf.Floor((_timer % 1.0f) * 100.0f).ToString("00");
 
-        if (_timer <= 0.0f) {
+        if (_timer <= 0.0f && !_timedOut) {
+            _timedOut = true;
+
             Time.timeScale = 0.0f;
             _timedOutScreen.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
