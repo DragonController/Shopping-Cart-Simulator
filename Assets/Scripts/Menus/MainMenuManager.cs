@@ -10,7 +10,7 @@ public class MainMenuManager : MenuManager {
     [SerializeField] private GameObject[] _menus;
     [SerializeField] private GameObject _exitMenu;
     [SerializeField] private Button[] _mainButtons;
-    [SerializeField] private Button _defaultButton, _subtractButton, _addButton, _standardButton, _expressButton, _promoCodeButton;
+    [SerializeField] private Button _defaultButton, _subtractButton, _addButton, _standardButton, _expressButton, _placeOrderButton;
     [SerializeField] private Button _defaultExitMenuButton;
     [SerializeField] private TMP_Text _itemCountText, _totalText;
     [SerializeField] private int _maxItems;
@@ -84,20 +84,24 @@ public class MainMenuManager : MenuManager {
         UpdateTotal();
     }
 
-    public void SetIsStandardMode(bool isStandardMode) {
-        GameCreationParams.isStandardMode = isStandardMode;
+    public void SetMode(int mode) {
+        GameCreationParams.mode = mode;
 
         UpdateTotal();
     }
 
     private void UpdateTotal() {
-        if (GameCreationParams.isStandardMode) {
-            _totalText.SetText((GameCreationParams.itemCount - 0.01f).ToString("Total: $0.00"));
-
-            return;
+        switch (GameCreationParams.mode) {
+            case 0:
+                _totalText.SetText("Total: $0.00");
+                break;
+            case 1:
+                _totalText.SetText((GameCreationParams.itemCount - 0.01f).ToString("Total: $0.00"));
+                break;
+            case 2:
+                _totalText.SetText((GameCreationParams.itemCount + _expressCost - 0.01f).ToString("Total: $0.00"));
+                break;
         }
-
-        _totalText.SetText((GameCreationParams.itemCount + _expressCost - 0.01f).ToString("Total: $0.00"));
     }
 
     public void LoadSceneAsync(string sceneName) {
@@ -175,11 +179,11 @@ public class MainMenuManager : MenuManager {
         _lastButtonSelected = button;
 
         if (button == _standardButton || button == _expressButton) {
-            Navigation navigation = _promoCodeButton.navigation;
+            Navigation navigation = _placeOrderButton.navigation;
 
             navigation.selectOnUp = button;
 
-            _promoCodeButton.navigation = navigation;
+            _placeOrderButton.navigation = navigation;
         }
     }
 }

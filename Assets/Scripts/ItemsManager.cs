@@ -60,7 +60,11 @@ public class ItemsManager : MonoBehaviour {
             _defaultButton.Select();
             _pauseMenuManager.SetLastSelectedButton(_defaultButton);
 
-            _winnerText.text = "Congradulations!\nYou completed your shopping list with " + _minutesAndSeconds.text + "." + _centiseconds.text + " to spare";
+            if (GameCreationParams.mode == 0) {
+                _winnerText.text = "Congradulations!\nYou completed the tutorial in " + _minutesAndSeconds.text + "." + _centiseconds.text;
+            } else {
+                _winnerText.text = "Congradulations!\nYou completed your shopping list with " + _minutesAndSeconds.text + "." + _centiseconds.text + " to spare";
+            }
         }
     }
 }
