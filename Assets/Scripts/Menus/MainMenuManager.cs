@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ public class MainMenuManager : MenuManager {
     [SerializeField] private int _maxItems;
     [SerializeField] private float _expressCost;
 
+    [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] string _keyboardControlScheme, _controllerControlScheme;
     [SerializeField] private Image _loadingScreenImage;
 
     private PauseAction _pauseAction;
@@ -59,6 +62,11 @@ public class MainMenuManager : MenuManager {
     private void Update() {
         if (EventSystem.current.currentSelectedGameObject == null && _lastButtonSelected != null) {
             _lastButtonSelected.Select();
+        }
+
+        if (_playerInput.currentControlScheme == _keyboardControlScheme || _playerInput.currentControlScheme == _controllerControlScheme) {
+            print(_playerInput.currentControlScheme);
+            GameCreationParams.currentControlScheme = _playerInput.currentControlScheme;
         }
     }
 

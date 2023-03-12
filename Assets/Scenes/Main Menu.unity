@@ -4720,6 +4720,7 @@ GameObject:
   - component: {fileID: 1833495822}
   - component: {fileID: 1833495821}
   - component: {fileID: 1833495825}
+  - component: {fileID: 1833495826}
   m_Layer: 5
   m_Name: Main Menu Canvas
   m_TagString: Untagged
@@ -4853,7 +4854,41 @@ MonoBehaviour:
   _totalText: {fileID: 47328687}
   _maxItems: 10
   _expressCost: 5
+  _playerInput: {fileID: 1833495826}
+  _keyboardControlScheme: Keyboard&Mouse
+  _controllerControlScheme: Gamepad
   _loadingScreenImage: {fileID: 567916408}
+--- !u!114 &1833495826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833495820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 44342f3654663fe49ba8f8d82320a385,
+    type: 3}
+  m_NotificationBehavior: 3
+  m_UIInputModule: {fileID: 2004969143}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 537590114}
 --- !u!1 &1842253881
 GameObject:
   m_ObjectHideFlags: 0

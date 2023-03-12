@@ -18,7 +18,9 @@ public class HandController : MonoBehaviour {
     private Vector3 _maxTargetLocalPos, _minTargetLocalPos;
 
     private void Start() {
-        Cursor.lockState = CursorLockMode.Locked;
+        if (GameCreationParams.mode != 0) {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
 
         _elbowTransform = transform.parent;
         _shoulderTransform = _elbowTransform.parent;

@@ -2,12 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class PauseMenuManager : MenuManager {
     [SerializeField] private GameObject _pauseMenu, _restartMenu, _exitMenu;
+    [SerializeField] private TutorialMenuController _tutorialMenuController;
     [SerializeField] private Button[] _mainButtons;
     [SerializeField] private Button _defaultButton, _restartMenuButton, _defaultRestartMenuButton, _exitMenuButton, _defaultExitMenuButton;
 
+    [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private Image _loadingScreenImage;
 
     private PauseAction _pauseAction;
@@ -40,6 +43,12 @@ public class PauseMenuManager : MenuManager {
     }
 
     private void TogglePause() {
+        if (_tutorialMenuController.IsTutorialMenuOpen()) {
+            _tutorialMenuController.CloseTutorialMenu();
+
+            return;
+        }
+
         switch (_paused) {
             case 0:
                 Pause();
@@ -135,12 +144,16 @@ public class PauseMenuManager : MenuManager {
         _loadingScreenImage.enabled = true;
         Time.timeScale = 1.0f;
 
+        GameCreationParams.currentControlScheme = _playerInput.currentControlScheme;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void LoadSceneAsync(string sceneName) {
         _loadingScreenImage.enabled = true;
         Time.timeScale = 1.0f;
+        
+        GameCreationParams.currentControlScheme = _playerInput.currentControlScheme;
 
         SceneManager.LoadSceneAsync(sceneName);
     }
