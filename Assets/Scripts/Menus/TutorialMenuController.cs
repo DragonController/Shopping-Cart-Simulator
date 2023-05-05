@@ -10,8 +10,6 @@ public class TutorialMenuController : MonoBehaviour {
         if (GameCreationParams.mode != 0) {
             return;
         }
-
-        print(GameCreationParams.currentControlScheme);
         
         _keyboardTextGameObject.SetActive(false);
         _controllerTextGameObject.SetActive(false);

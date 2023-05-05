@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.IO;
 using System.Collections.Generic;
 
 public class ItemsManager : MonoBehaviour {
@@ -11,6 +12,7 @@ public class ItemsManager : MonoBehaviour {
     [SerializeField] private Button _defaultButton;
     [SerializeField] private TMP_Text _winnerText, _minutesAndSeconds, _centiseconds;
     [SerializeField] private TimerController _timerController;
+    [SerializeField] private float _expressCost;
 
     private Dictionary<GameObject, int> _items = new Dictionary<GameObject, int>();
     private List<int> _remainingItemTypeIndices = new List<int>();
@@ -61,20 +63,47 @@ public class ItemsManager : MonoBehaviour {
             _defaultButton.Select();
             _pauseMenuManager.SetLastSelectedButton(_defaultButton);
 
-            OrderScore orderScore = new OrderScore();
-            orderScore.itemCount = GameCreationParams.itemCount;
-            orderScore.mode = GameCreationParams.mode;
+            OrderScore lastOrderScore = new OrderScore();
+            lastOrderScore.itemCount = GameCreationParams.itemCount;
+            lastOrderScore.mode = GameCreationParams.mode;
+            lastOrderScore.time = _timerController.GetTime();
 
             if (GameCreationParams.mode == 0) {
-                orderScore.time = 0.0f;
                 _winnerText.text = "Congradulations!\nYou completed the tutorial in " + _minutesAndSeconds.text + "." + _centiseconds.text;
             } else {
-                orderScore.time = _timerController.GetRemainingTime();
                 _winnerText.text = "Congradulations!\nYou completed your shopping list with " + _minutesAndSeconds.text + "." + _centiseconds.text + " to spare";
             }
 
-            string json = JsonUtility.ToJson(orderScore);
-            System.IO.File.WriteAllText(Application.persistentDataPath + "/OrderScores.json", json);
+            string lastOrderJson = JsonUtility.ToJson(lastOrderScore);
+            System.IO.File.WriteAllText(Application.persistentDataPath + "/LastOrderScore.json", lastOrderJson);
+
+            if (File.Exists(Application.persistentDataPath + "/HighOrderScore.json")) {
+                OrderScore highOrderScore = new OrderScore();
+                string highOrderJson = System.IO.File.ReadAllText(Application.persistentDataPath + "/HighOrderScore.json");
+                highOrderScore = JsonUtility.FromJson<OrderScore>(highOrderJson);
+
+                if (highOrderScore.mode == 0) {
+                    if (lastOrderScore.mode > 0 || lastOrderScore.time < highOrderScore.time) {
+                        System.IO.File.WriteAllText(Application.persistentDataPath + "/HighOrderScore.json", lastOrderJson);
+                    }
+                } else {
+                    float lastOrderTotal = lastOrderScore.itemCount;
+                    float highOrderTotal = highOrderScore.itemCount;
+
+                    if (lastOrderScore.mode == 2) {
+                        highOrderTotal += _expressCost;
+                    }
+                    if (highOrderScore.mode == 2) {
+                        highOrderTotal += _expressCost;
+                    }
+
+                    if ((lastOrderTotal == highOrderTotal && lastOrderScore.time < highOrderScore.time) || lastOrderTotal > highOrderTotal) {
+                        System.IO.File.WriteAllText(Application.persistentDataPath + "/HighOrderScore.json", lastOrderJson);
+                    }
+                }
+            } else {
+                System.IO.File.WriteAllText(Application.persistentDataPath + "/HighOrderScore.json", lastOrderJson);
+            }
         }
     }
 }
