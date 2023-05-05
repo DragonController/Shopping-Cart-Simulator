@@ -65,7 +65,6 @@ public class MainMenuManager : MenuManager {
         }
 
         if (_playerInput.currentControlScheme == _keyboardControlScheme || _playerInput.currentControlScheme == _controllerControlScheme) {
-            print(_playerInput.currentControlScheme);
             GameCreationParams.currentControlScheme = _playerInput.currentControlScheme;
         }
     }

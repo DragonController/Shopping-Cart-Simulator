@@ -62,4 +62,8 @@ public class TimerController : MonoBehaviour {
 
         _centiseconds.text = Mathf.Floor((_timer % 1.0f) * 100.0f).ToString("00");
     }
+
+    public float GetRemainingTime() {
+        return _timer;
+    }
 }

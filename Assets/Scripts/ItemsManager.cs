@@ -10,6 +10,7 @@ public class ItemsManager : MonoBehaviour {
     [SerializeField] private PauseMenuManager _pauseMenuManager;
     [SerializeField] private Button _defaultButton;
     [SerializeField] private TMP_Text _winnerText, _minutesAndSeconds, _centiseconds;
+    [SerializeField] private TimerController _timerController;
 
     private Dictionary<GameObject, int> _items = new Dictionary<GameObject, int>();
     private List<int> _remainingItemTypeIndices = new List<int>();
@@ -60,11 +61,20 @@ public class ItemsManager : MonoBehaviour {
             _defaultButton.Select();
             _pauseMenuManager.SetLastSelectedButton(_defaultButton);
 
+            OrderScore orderScore = new OrderScore();
+            orderScore.itemCount = GameCreationParams.itemCount;
+            orderScore.mode = GameCreationParams.mode;
+
             if (GameCreationParams.mode == 0) {
+                orderScore.time = 0.0f;
                 _winnerText.text = "Congradulations!\nYou completed the tutorial in " + _minutesAndSeconds.text + "." + _centiseconds.text;
             } else {
+                orderScore.time = _timerController.GetRemainingTime();
                 _winnerText.text = "Congradulations!\nYou completed your shopping list with " + _minutesAndSeconds.text + "." + _centiseconds.text + " to spare";
             }
+
+            string json = JsonUtility.ToJson(orderScore);
+            System.IO.File.WriteAllText(Application.persistentDataPath + "/OrderScores.json", json);
         }
     }
 }
