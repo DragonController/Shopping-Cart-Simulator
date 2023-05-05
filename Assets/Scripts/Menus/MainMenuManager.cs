@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,7 +14,7 @@ public class MainMenuManager : MenuManager {
     [SerializeField] private Button[] _mainButtons;
     [SerializeField] private Button _defaultButton, _subtractButton, _addButton, _standardButton, _expressButton, _placeOrderButton;
     [SerializeField] private Button _defaultExitMenuButton;
-    [SerializeField] private TMP_Text _itemCountText, _totalText;
+    [SerializeField] private TMP_Text _itemCountText, _totalText, _ordersListText;
     [SerializeField] private int _maxItems;
     [SerializeField] private float _expressCost;
 
@@ -53,6 +54,69 @@ public class MainMenuManager : MenuManager {
         _pauseAction.Enable();
 
         ChangeItemCount(0);
+
+        if (File.Exists(Application.persistentDataPath + "/LastOrderScore.json")) {
+            OrderScore lastOrderScore = new OrderScore();
+            OrderScore highOrderScore = new OrderScore();
+            string lastOrderJson = System.IO.File.ReadAllText(Application.persistentDataPath + "/LastOrderScore.json");
+            string highOrderJson = System.IO.File.ReadAllText(Application.persistentDataPath + "/HighOrderScore.json");
+            lastOrderScore = JsonUtility.FromJson<OrderScore>(lastOrderJson);
+            highOrderScore = JsonUtility.FromJson<OrderScore>(highOrderJson);
+
+            string lastOrderMode = "???";
+
+            switch (lastOrderScore.mode) {
+                case 0:
+                    lastOrderMode = "Tutorial";
+                    break;
+                case 1:
+                    lastOrderMode = "Standard";
+                    break;
+                case 2:
+                    lastOrderMode = "Express";
+                    break;
+            }
+
+            string lastOrderTime;
+
+            if (lastOrderScore.time >= 60.0f) {
+                lastOrderTime = Mathf.Floor(lastOrderScore.time / 60.0f) + ":" + Mathf.Floor(lastOrderScore.time % 60.0f).ToString("00") + "." + Mathf.Floor((lastOrderScore.time % 1.0f) * 100.0f).ToString("00");
+            } else if (lastOrderScore.time >= 10.0f) {
+                lastOrderTime = Mathf.Floor(lastOrderScore.time % 60.0f).ToString("00") + "." + Mathf.Floor((lastOrderScore.time % 1.0f) * 100.0f).ToString("00");
+            } else {
+                lastOrderTime = Mathf.Floor(lastOrderScore.time % 60.0f).ToString("0") + "." + Mathf.Floor((lastOrderScore.time % 1.0f) * 100.0f).ToString("00");
+            }
+
+            if (lastOrderScore.mode == highOrderScore.mode && lastOrderScore.itemCount == highOrderScore.itemCount && lastOrderScore.time == highOrderScore.time) {
+                _ordersListText.SetText("<b>Highest scoring (and most recent) order</b>\nMode: " + lastOrderMode + "\nNumber of items: " + lastOrderScore.itemCount + "\nTime Remaining: " + lastOrderTime);
+            } else {
+                string highOrderMode = "???";
+
+                switch (highOrderScore.mode) {
+                    case 0:
+                        highOrderMode = "Tutorial";
+                        break;
+                    case 1:
+                        highOrderMode = "Standard";
+                        break;
+                    case 2:
+                        highOrderMode = "Express";
+                        break;
+                }
+
+                string highOrderTime;
+
+                if (highOrderScore.time >= 60.0f) {
+                    highOrderTime = Mathf.Floor(highOrderScore.time / 60.0f) + ":" + Mathf.Floor(highOrderScore.time % 60.0f).ToString("00") + "." + Mathf.Floor((highOrderScore.time % 1.0f) * 100.0f).ToString("00");
+                } else if (highOrderScore.time >= 10.0f) {
+                    highOrderTime = Mathf.Floor(highOrderScore.time % 60.0f).ToString("00") + "." + Mathf.Floor((highOrderScore.time % 1.0f) * 100.0f).ToString("00");
+                } else {
+                    highOrderTime = Mathf.Floor(highOrderScore.time % 60.0f).ToString("0") + "." + Mathf.Floor((highOrderScore.time % 1.0f) * 100.0f).ToString("00");
+                }
+
+                _ordersListText.SetText("<b>Highest scoring order</b>\nMode: " + highOrderMode + "\nNumber of items: " + highOrderScore.itemCount + "\nTime Remaining: " + highOrderTime + "\n\n<b>Most recent order</b>\nMode: " + lastOrderMode + "\nNumber of items: " + lastOrderScore.itemCount + "\nTime Remaining: " + lastOrderTime);
+            }
+        }
     }
  
     private void OnDisable() {
