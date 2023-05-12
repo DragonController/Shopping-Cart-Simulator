@@ -18,7 +18,8 @@ Unbuilt Version:
 Open project via Unity Hub. Click on the play button.
 
 Built Version (Windows):
-Extract the .Zip file. Run ShoppingCartSimulator.exe.
+Download the .zip file from https://www.dropbox.com/s/aexypga68grc76b/Build.zip?dl=0.
+Extract the .zip file. Run ShoppingCartSimulator.exe.
 
 **How to build (for Windows):**
 Open project via Unity Hub. Click File > Build Settings. Click Build.
