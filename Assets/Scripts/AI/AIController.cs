@@ -23,9 +23,6 @@ public class AIController : MonoBehaviour {
             newDestination = navMeshHit.position;
 
             _navMeshAgent.SetDestination(newDestination);
-
-            print(newDestination);
-            print(_navMeshAgent.remainingDistance);
         }
     }
 }
