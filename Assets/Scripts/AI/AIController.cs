@@ -18,13 +18,14 @@ public class AIController : MonoBehaviour {
         if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance) {
             Vector3 newDestination = new Vector3(Random.Range(_floorRect.xMin, _floorRect.xMax), 0.0f, Random.Range(_floorRect.yMin, _floorRect.yMax));
 
-            NavMesh.SamplePosition(newDestination, out navMeshHit, _navMeshAgent.height * 2.0f, NavMesh.AllAreas);
+            NavMesh.SamplePosition(newDestination, out navMeshHit, Vector2.Distance(_floorRect.min, _floorRect.max) * 2.0f, NavMesh.AllAreas);
 
             newDestination = navMeshHit.position;
 
-            print(newDestination);
-
             _navMeshAgent.SetDestination(newDestination);
+
+            print(newDestination);
+            print(_navMeshAgent.remainingDistance);
         }
     }
 }

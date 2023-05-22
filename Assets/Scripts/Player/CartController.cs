@@ -53,8 +53,6 @@ public class CartController : MonoBehaviour {
 
         move = move.normalized * Mathf.Min(1.0f, move.magnitude);
 
-        print(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y + move.x, -1.0f, 1.0f) * _halfMoveAcceleration * Time.fixedDeltaTime));
-
         _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y + move.x, -1.0f, 1.0f) * _halfMoveAcceleration * _articulationBody.mass), _backLeftWheelTransform.position);
         _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y - move.x, -1.0f, 1.0f) * _halfMoveAcceleration * _articulationBody.mass), _backRightWheelTransform.position);
 
