@@ -2,40 +2,29 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class AIController : MonoBehaviour {
-    [SerializeField] private Rect floorRect;
+    [SerializeField] private Rect _floorRect;
     
-    private NavMeshAgent navMeshAgent;
-    private Rigidbody aiRigidbody;
-
-    private Vector3 prevPosition;
+    private NavMeshAgent _navMeshAgent;
+    private Rigidbody _aiRigidbody;
 
     private void Start() {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        aiRigidbody = GetComponent<Rigidbody>();
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _aiRigidbody = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate() {
         NavMeshHit navMeshHit;
 
-        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance) {
-            Vector3 newDestination = new Vector3(Random.Range(floorRect.xMin, floorRect.xMax), 0.0f, Random.Range(floorRect.yMin, floorRect.yMax));
+        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance) {
+            Vector3 newDestination = new Vector3(Random.Range(_floorRect.xMin, _floorRect.xMax), 0.0f, Random.Range(_floorRect.yMin, _floorRect.yMax));
 
-            NavMesh.SamplePosition(newDestination, out navMeshHit, navMeshAgent.height * 2.0f, NavMesh.AllAreas);
+            NavMesh.SamplePosition(newDestination, out navMeshHit, _navMeshAgent.height * 2.0f, NavMesh.AllAreas);
 
-            // print(navMeshHit.position);
             newDestination = navMeshHit.position;
 
-            navMeshAgent.SetDestination(navMeshHit.position);
+            print(newDestination);
 
-            prevPosition = newDestination;
+            _navMeshAgent.SetDestination(newDestination);
         }
-
-        NavMesh.FindClosestEdge(navMeshAgent.nextPosition, out navMeshHit, NavMesh.AllAreas);
-        print(Vector3.Distance(navMeshAgent.nextPosition, navMeshHit.position));
-        print(Vector3.Distance(navMeshAgent.nextPosition, navMeshHit.position) < navMeshAgent.radius);
-
-        // if () {
-        //     aiRigidbody.AddRelativeForce(new Vector3(-navMeshAgent.acceleration, 0.0f, 0.0f), ForceMode.Acceleration);
-        // }
     }
 }

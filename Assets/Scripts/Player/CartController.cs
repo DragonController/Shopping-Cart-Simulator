@@ -7,7 +7,7 @@ public class CartController : MonoBehaviour {
     [SerializeField] private CartTriggerController _cartTriggerController;
     [SerializeField] private CoverTriggerController _coverTriggerController;
 
-    [SerializeField] private float _halfMoveForce, _lookSpeed, _grabSpeed, _retractSpeed;
+    [SerializeField] private float _halfMoveAcceleration, _lookSpeed, _grabSpeed, _retractSpeed;
     [SerializeField] private float _minHandY;
 
     [SerializeField] private Transform _backLeftWheelTransform, _backRightWheelTransform, _minTargetTransform, _targetTransform, _maxTargetTransform, _itemsParentTransform;
@@ -53,8 +53,10 @@ public class CartController : MonoBehaviour {
 
         move = move.normalized * Mathf.Min(1.0f, move.magnitude);
 
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y + move.x, -1.0f, 1.0f) * _halfMoveForce * _articulationBody.mass * Time.fixedDeltaTime), _backLeftWheelTransform.position);
-        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y - move.x, -1.0f, 1.0f) * _halfMoveForce * _articulationBody.mass * Time.fixedDeltaTime), _backRightWheelTransform.position);
+        print(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y + move.x, -1.0f, 1.0f) * _halfMoveAcceleration * Time.fixedDeltaTime));
+
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y + move.x, -1.0f, 1.0f) * _halfMoveAcceleration * _articulationBody.mass), _backLeftWheelTransform.position);
+        _articulationBody.AddForceAtPosition(transform.TransformVector(0.0f, 0.0f, Mathf.Clamp(move.y - move.x, -1.0f, 1.0f) * _halfMoveAcceleration * _articulationBody.mass), _backRightWheelTransform.position);
 
         List<Collider> cartTriggerColliders = _cartTriggerController.GetCartTriggerColliders();
 
