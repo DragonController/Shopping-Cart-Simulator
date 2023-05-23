@@ -14,7 +14,7 @@ Blender
 
 **Assets Used:**
 
-Atkinson Hyperlegible Font
+Atkinson Hyperlegible Font via the included SIL Open Font License
 
 **How to Run:**
 
