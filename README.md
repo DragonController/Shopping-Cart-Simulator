@@ -27,7 +27,7 @@ Extract the .zip file. Run ShoppingCartSimulator.exe.
 
 **How to build (for Windows):**
 
-Open project via Unity Hub. Click File > Build Settings. Click Build.
+Open project via the Unity Hub. Click File > Build Settings. Click Build.
 
 **How to Play:**
 
@@ -36,6 +36,16 @@ Start by selecting the number of items that you want to collect and the mode tha
 **Credits:**
 
 Grace "Void" Fowler
+
+**Planned Updates**
+
+Improve visuals
+Replace placeholders such as changing the items collected from multi-colored boxes to actual grocery items
+Improve controls
+Fix bugs
+Redesign the map UI system
+Update and improve the AI shopping carts
+Add a public leaderboard system
 
 **New User Stories**
 
