@@ -1,6 +1,6 @@
 **Shopping Cart Simulator**
 
-This is a game created in Unity Version 2022.2.19f1. It allows players to act as a shopping cart and attempt to complete a shopping list within an allotted amount of time.
+This is a game created in Unity Version 2022.2.20f1. It allows players to act as a shopping cart and attempt to complete a shopping list within an allotted amount of time.
 
 **Motivation:**
 
